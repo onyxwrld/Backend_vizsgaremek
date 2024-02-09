@@ -9,3 +9,83 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Bicycle {
+  bicycle_id Int         @id @default(autoincrement())// @relation(fields: [Reservation], references: [BicycleId])
+  type       BicycleType
+  price      Int
+}
+
+model Menu {
+  id    Int    @id @default(autoincrement()) //@relation(fields: [Order], references: [menu_id])
+  name  String
+  type  String
+  price Int
+}
+
+model Order {
+  order_id       Int @id @default(autoincrement())
+  reservation_id Int //@relation(fields: [reservation], references: [reservation_id])
+  quantity       Int
+  total_amount   Int
+  menu_id        Int //@relation(fields: [menu], references: [id])
+}
+
+model Reservation {
+  reservation_id   Int              @id @default(autoincrement()) //@relation(fields: [Order], references: [reservation_id])
+  user_id          Int            //  @relation(fields: [user], references: [id])
+  bicycle_id       Int             // @relation(fields: [bicycle], references: [bicycle_id])
+  start_time       DateTime
+  end_time         DateTime
+  reservation_time ReservationTime
+  state            ReservationState
+  workers_id       Int            //  @relation(fields: [worker], references: [workers_id])
+}
+
+model Worker {
+  workers_id Int       @id @default(autoincrement()) //@relation(fields: [Reservation], references: [workers_id])
+  name       String
+  state      EnumState
+  company_id Int      // @relation(fields: [TorzsAdatok], references: [company_id])
+}
+
+model TorzsAdatok {
+  phone_number  Int    @id @default(autoincrement())
+  email         String
+  opening_hours String
+  location      String
+  company_id    Int   // @relation(fields: [Workers], references: [company_id])
+}
+
+model User {
+  id         Int    @id @default(autoincrement()) //@relation(fields: [Reservation], references: [user_id])
+  username   String
+  email      String @unique
+  password   String
+  first_name String
+  last_name  String
+  token      String
+}
+
+enum ReservationTime {
+  One
+  Three
+  Five
+}
+
+enum ReservationState {
+  Reservation
+  Pending
+  Done
+}
+
+enum BicycleType {
+  Small
+  Medium
+  Large
+}
+
+enum EnumState {
+  Active
+  Passive
+}
