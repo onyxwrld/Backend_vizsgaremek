@@ -11,57 +11,58 @@ datasource db {
 }
 
 model Bicycle {
-  bicycle_id Int         @id @default(autoincrement())// @relation(fields: [Reservation], references: [BicycleId])
+  id Int         @id @default(autoincrement())
   type       BicycleType
   price      Int
 }
 
 model Menu {
-  id    Int    @id @default(autoincrement()) //@relation(fields: [Order], references: [menu_id])
+  id    Int    @id @default(autoincrement())
   name  String
   type  String
   price Int
 }
 
 model Order {
-  order_id       Int @id @default(autoincrement())
-  reservation_id Int //@relation(fields: [reservation], references: [reservation_id])
+  id       Int @id @default(autoincrement())
+  reservation_id Int
+  
   quantity       Int
   total_amount   Int
-  menu_id        Int //@relation(fields: [menu], references: [id])
+  menu_id        Int
 }
 
 model Reservation {
-  reservation_id   Int              @id @default(autoincrement()) //@relation(fields: [Order], references: [reservation_id])
-  user_id          Int            //  @relation(fields: [user], references: [id])
-  bicycle_id       Int             // @relation(fields: [bicycle], references: [bicycle_id])
+  id   Int              @id @default(autoincrement())
+  user_id          Int  @unique
+  bicycle_id       Int  @unique
   start_time       DateTime
   end_time         DateTime
   reservation_time ReservationTime
   state            ReservationState
-  workers_id       Int            //  @relation(fields: [worker], references: [workers_id])
+  workers_id       Int @unique
 }
 
 model Worker {
-  workers_id Int       @id @default(autoincrement()) //@relation(fields: [Reservation], references: [workers_id])
+  id         Int      @id @default(autoincrement())
   name       String
   state      EnumState
-  company_id Int      // @relation(fields: [TorzsAdatok], references: [company_id])
+  company_id Int  @unique
 }
 
 model TorzsAdatok {
   phone_number  Int    @id @default(autoincrement())
-  email         String
+  email         String @unique
   opening_hours String
   location      String
-  company_id    Int   // @relation(fields: [Workers], references: [company_id])
+  company_id    Int @unique
 }
 
 model User {
-  id         Int    @id @default(autoincrement()) //@relation(fields: [Reservation], references: [user_id])
+  id         Int    @id @default(autoincrement())
   username   String
   email      String @unique
-  password   String
+  password   String @unique
   first_name String
   last_name  String
   token      String
