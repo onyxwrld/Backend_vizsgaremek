@@ -86,7 +86,7 @@ enum BicycleType {
   Large
 }
 
-enum EnumState {
+ enum EnumState {
   Active
   Passive
 }
