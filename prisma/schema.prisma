@@ -28,7 +28,6 @@ model Order {
   id             Int @id @default(autoincrement())
   reservation_id Int
 
-  quantity     Int
   total_amount Int
   menu_id      Int
 }
