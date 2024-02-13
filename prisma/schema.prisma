@@ -14,6 +14,7 @@ model Bicycle {
   id    Int         @id @default(autoincrement())
   type  BicycleType
   price Int
+  reservationId Reservation[]
 }
 
 model Menu {
@@ -34,20 +35,22 @@ model Order {
 
 model Reservation {
   id               Int              @id @default(autoincrement())
-  user_id          Int              @unique
-  bicycle_id       Int              @unique
+  user User @relation(fields: [user_id], references: [id])
+  user_id          Int
+  bicycle_id       Bicycle[]              
   start_time       DateTime
-  end_time         DateTime
   reservation_time ReservationTime
   state            ReservationState
-  workers_id       Int              @unique
+  workers_id       Int           
+  worker Worker @relation(fields: [workers_id], references: [id])
 }
 
 model Worker {
-  id         Int       @id @default(autoincrement())
+  id         Int       @id @default(autoincrement()) 
   name       String
   state      EnumState
-  company_id Int       @unique
+  company_id Int
+  reservation Reservation[]
 }
 
 model TorzsAdatok {
@@ -60,6 +63,7 @@ model TorzsAdatok {
 
 model User {
   id         Int    @id @default(autoincrement())
+  reservationID Reservation[]
   username   String
   email      String @unique
   password   String @unique
