@@ -1,18 +1,20 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEmail, IsInt, IsNotEmpty, Min } from "class-validator";
 
 export class CreateTorzsAdatokDto {
-    @IsNotEmpty({message:'A név megadása kötelező'})
-    phone_number: number;
-    email:string;
-    opening_hours : string;
-    location: string;
-    company_id: number;
+  @IsNotEmpty({ message: 'A név megadása kötelező' })
+  phone_number: number;
 
+  @IsEmail({}, { message: 'Helytelen email formátum' })
+  email: string;
+
+  @IsNotEmpty({ message: 'Nyitvatartási idő megadása kötelező' })
+  opening_hours: string;
+
+  @IsNotEmpty({ message: 'Hely megadása kötelező' })
+  location: string;
+
+  @IsInt()
+  @Min(1, { message: 'Hibás cégazonosító' })
+  company_id: number;
 }
-/*
-*  phone_number  Int    @id @default(autoincrement())
-  email         String @unique
-  opening_hours String
-  location      String
-  company_id    Int    @unique
-*/
+
