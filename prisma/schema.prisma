@@ -65,7 +65,7 @@ model User {
   password   String @unique
   first_name String
   last_name  String
-  token      String
+  token      String @unique
 }
 
 enum ReservationTime {
