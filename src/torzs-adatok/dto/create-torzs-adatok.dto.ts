@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsPhoneNumber } from "class-validator";
 
 export class CreateTorzsAdatokDto {
     @IsNotEmpty({message:'A telefon megadása kötelező'})
