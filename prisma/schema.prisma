@@ -11,9 +11,9 @@ datasource db {
 }
 
 model Bicycle {
-  id Int         @id @default(autoincrement())
-  type       BicycleType
-  price      Int
+  id    Int         @id @default(autoincrement())
+  type  BicycleType
+  price Int
 }
 
 model Menu {
@@ -24,30 +24,30 @@ model Menu {
 }
 
 model Order {
-  id       Int @id @default(autoincrement())
+  id             Int @id @default(autoincrement())
   reservation_id Int
-  
-  quantity       Int
-  total_amount   Int
-  menu_id        Int
+
+  quantity     Int
+  total_amount Int
+  menu_id      Int
 }
 
 model Reservation {
-  id   Int              @id @default(autoincrement())
-  user_id          Int  @unique
-  bicycle_id       Int  @unique
+  id               Int              @id @default(autoincrement())
+  user_id          Int              @unique
+  bicycle_id       Int              @unique
   start_time       DateTime
   end_time         DateTime
   reservation_time ReservationTime
   state            ReservationState
-  workers_id       Int @unique
+  workers_id       Int              @unique
 }
 
 model Worker {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   name       String
   state      EnumState
-  company_id Int  @unique
+  company_id Int       @unique
 }
 
 model TorzsAdatok {
@@ -55,7 +55,7 @@ model TorzsAdatok {
   email         String @unique
   opening_hours String
   location      String
-  company_id    Int @unique
+  company_id    Int    @unique
 }
 
 model User {
