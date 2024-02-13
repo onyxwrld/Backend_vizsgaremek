@@ -9,8 +9,9 @@ import { OrderModule } from './order/order.module';
 import { TorzsAdatokModule } from './torzs-adatok/torzs-adatok.module';
 import { BicycleModule } from './bicycle/bicycle.module';
 import { ReservationModule } from './reservation/reservation.module';
+import { ReservationModule } from './reservation/reservation.module';
 @Module({
-  imports: [BeercycleModule, UserModule, WorkerModule, OrderModule, TorzsAdatokModule, BicycleModule],
+  imports: [BeercycleModule, UserModule, WorkerModule, OrderModule, TorzsAdatokModule, BicycleModule, ReservationModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
