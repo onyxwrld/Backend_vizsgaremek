@@ -10,8 +10,7 @@ export class CreateTorzsAdatokDto {
     @IsEmail({}, { message: 'Helytelen email formátum' })
     email:string;
 
-    @IsNotEmpty({message:'Nyitási adatok megadása kötelező'})
-    opening_hours : string;
+    opening_hours_id: number;
 
     @IsNotEmpty({message:'Hely megadása megadása kötelező'})
     location: string;

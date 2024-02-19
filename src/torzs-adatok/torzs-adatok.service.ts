@@ -1,15 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTorzsAdatokDto } from './dto/create-torzs-adatok.dto';
 import { UpdateTorzsAdatokDto } from './dto/update-torzs-adatok.dto';
+import { PrismaService } from 'src/prisma.service';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Injectable()
 export class TorzsAdatokService {
+  constructor (private readonly db: PrismaService){
+
+  }
   create(createTorzsAdatokDto: CreateTorzsAdatokDto) {
     return 'This action adds a new torzsAdatok';
   }
 
   findAll() {
-    return `This action returns all torzsAdatok`;
+    return this.db.torzsAdatok.findMany({
+      include: {
+        opening: true,
+        worker: true
+      }
+    });
   }
 
   findOne(id: number) {
@@ -17,7 +27,9 @@ export class TorzsAdatokService {
   }
 
   update(id: number, updateTorzsAdatokDto: UpdateTorzsAdatokDto) {
-    return `This action updates a #${id} torzsAdatok`;
+    return this.db.torzsAdatok.findFirstOrThrow({
+      where: {id}
+    })
   }
 
   remove(id: number) {
