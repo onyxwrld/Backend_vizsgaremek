@@ -19,4 +19,5 @@ export class CreateUserDto {
     
     @IsString({ message: 'A vezetéknévnek szöveges típusúnak kell lennie.' })
     last_name: string;
+    token:string;
 }
