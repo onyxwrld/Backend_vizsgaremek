@@ -27,9 +27,12 @@ export class TorzsAdatokService {
   }
 
   update(id: number, updateTorzsAdatokDto: UpdateTorzsAdatokDto) {
-    return this.db.torzsAdatok.findFirstOrThrow({
-      where: {id}
-    })
+    return this.db.torzsAdatok.update(
+      {
+        data: updateTorzsAdatokDto,
+        where: {id}
+      }
+    )
   }
 
   remove(id: number) {
