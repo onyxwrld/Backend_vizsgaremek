@@ -22,6 +22,8 @@ model Menu {
   name  String
   type  String
   price Int
+  orderId Int
+  order Order @relation(fields: [orderId], references: [id])
 }
 
 model Order {
@@ -29,19 +31,22 @@ model Order {
   reservation_id Int
 
   total_amount Int
-  menu_id      Int
+  menu Menu[]
+  reservation Reservation?
 }
 
 model Reservation {
   id               Int              @id @default(autoincrement())
   user User @relation(fields: [user_id], references: [id])
   user_id          Int
-  bicycle_id       Bicycle[]              
+  bicycle_id       Bicycle[]    
+  order_id Int @unique
+  order Order @relation(fields: [order_id], references: [id])          
+  workers_id       Int           
+  worker Worker @relation(fields: [workers_id], references: [id])
   start_time       DateTime
   reservation_time ReservationTime
   state            ReservationState
-  workers_id       Int           
-  worker Worker @relation(fields: [workers_id], references: [id])
 }
 
 model Worker {
@@ -50,14 +55,18 @@ model Worker {
   state      EnumState
   company_id Int
   reservation Reservation[]
+  torzsAdatok_id Int
+  torzsAdatok TorzsAdatok?
 }
 
 model TorzsAdatok {
-  phone_number  Int    @id @default(autoincrement())
-  email         String @unique
+  id Int @id @default(autoincrement())
+  phone_number  Int   
+  email         String 
   opening_hours String
   location      String
   company_id    Int    @unique
+  worker Worker @relation(fields: [company_id], references: [id])
 }
 
 model User {
