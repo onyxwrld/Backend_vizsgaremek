@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,BadRequestException } from '@nestjs/common';
 import { BicycleService } from './bicycle.service';
 import { CreateBicycleDto } from './dto/create-bicycle.dto';
 import { UpdateBicycleDto } from './dto/update-bicycle.dto';
@@ -18,17 +18,28 @@ export class BicycleController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bicycleService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {return await this.bicycleService.findOne(+id);
+    }
+    catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBicycleDto: UpdateBicycleDto) {
-    return this.bicycleService.update(+id, updateBicycleDto);
+  async update(@Param('id') id: string, @Body() updateBicycleDto: UpdateBicycleDto) {
+    try {return await this.bicycleService.update(+id, updateBicycleDto);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bicycleService.remove(+id);
+  async remove(@Param('id') id: string) {
+   try{ return await this.bicycleService.remove(+id);
+   }catch{
+    throw new BadRequestException('A keresett ID nem található.')
+   }
+
   }
 }
