@@ -1,23 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class WorkerService {
+  constructor (private readonly db:PrismaService){
+
+  }
   create(createWorkerDto: CreateWorkerDto) {
-    return 'This action adds a new worker';
+    return this.db.worker.create({
+      data: createWorkerDto
+    });
   }
 
   findAll() {
-    return `This action returns all worker`;
+    return this.db.worker.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} worker`;
+    return this.db.worker.findUnique({
+      where: {id}
+    });
   }
 
   update(id: number, updateWorkerDto: UpdateWorkerDto) {
-    return `This action updates a #${id} worker`;
+    return this.db.worker.update({
+      data: updateWorkerDto,
+      where: {id}
+    });
   }
 
   remove(id: number) {

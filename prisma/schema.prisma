@@ -28,9 +28,9 @@ model Menu {
 
 model Order {
   id             Int @id @default(autoincrement())
-  total_amount Int
+  total_amount Int //tárolt eljárás
   menu Menu[]
-  reservation Reservation?
+  reservation Reservation? 
 }
 
 model Reservation {

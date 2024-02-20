@@ -1,15 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOpeningDto } from './dto/create-opening.dto';
 import { UpdateOpeningDto } from './dto/update-opening.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class OpeningService {
+  constructor (private readonly db:PrismaService){
+
+  }
   create(createOpeningDto: CreateOpeningDto) {
     return 'This action adds a new opening';
   }
 
   findAll() {
-    return `This action returns all opening`;
+    return this.db.opening.findMany();
   }
 
   findOne(id: number) {
@@ -17,7 +21,10 @@ export class OpeningService {
   }
 
   update(id: number, updateOpeningDto: UpdateOpeningDto) {
-    return `This action updates a #${id} opening`;
+    return this.db.opening.update({
+      data: updateOpeningDto,
+      where: {id}
+    });
   }
 
   remove(id: number) {
