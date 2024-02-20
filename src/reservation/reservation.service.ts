@@ -17,7 +17,7 @@ export class ReservationService {
   }
 
   findOne(id: number) {
-    return this.db.reservation.findUnique(
+    return this.db.reservation.findUniqueOrThrow(
       {
         where: {id},
         include: {

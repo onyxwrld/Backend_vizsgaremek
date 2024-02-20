@@ -17,7 +17,7 @@ export class BicycleService {
   }
 
   findOne(id: number) {
-    return this.db.bicycle.findUnique(
+    return this.db.bicycle.findUniqueOrThrow(
       {
         where: {id}
       }

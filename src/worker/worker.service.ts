@@ -19,7 +19,7 @@ export class WorkerService {
   }
 
   findOne(id: number) {
-    return this.db.worker.findUnique({
+    return this.db.worker.findUniqueOrThrow({
       where: {id}
     });
   }

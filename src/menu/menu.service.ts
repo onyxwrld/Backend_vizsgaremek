@@ -21,7 +21,7 @@ export class MenuService {
   }
 
   findOne(id: number) {
-    return this.db.menu.findUnique({
+    return this.db.menu.findUniqueOrThrow({
       where: {id}
     });
   }

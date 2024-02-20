@@ -19,7 +19,7 @@ export class OrderService {
   }
 
   findOne(id: number) {
-    return this.db.order.findUnique({
+    return this.db.order.findUniqueOrThrow({
       where:{id}
     });
   }

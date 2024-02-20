@@ -17,7 +17,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.db.user.findUnique({
+    return this.db.user.findUniqueOrThrow({
       where: {id}
     })
   }
