@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,BadRequestException } from '@nestjs/common';
 import { OpeningService } from './opening.service';
 import { CreateOpeningDto } from './dto/create-opening.dto';
 import { UpdateOpeningDto } from './dto/update-opening.dto';
@@ -18,17 +18,26 @@ export class OpeningController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.openingService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try { return await this.openingService.findOne(+id);
+    }catch{
+      throw new BadRequestException('Az IP cím nem található')
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOpeningDto: UpdateOpeningDto) {
-    return this.openingService.update(+id, updateOpeningDto);
+  async update(@Param('id') id: string, @Body() updateOpeningDto: UpdateOpeningDto) {
+    try {return await this.openingService.update(+id, updateOpeningDto);
+    }catch{
+      throw new BadRequestException('Az IP cím nem található')
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.openingService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {return await this.openingService.remove(+id);
+    }catch{
+      throw new BadRequestException('Az IP cím nem található')
+    }
   }
 }
