@@ -26,12 +26,18 @@ export class MenuController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.update(+id, updateMenuDto);
+  async update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
+    try{ return await this.menuService.update(+id, updateMenuDto);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {return await this.menuService.remove(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 }

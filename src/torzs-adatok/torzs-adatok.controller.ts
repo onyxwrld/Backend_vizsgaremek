@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
 import { TorzsAdatokService } from './torzs-adatok.service';
 import { CreateTorzsAdatokDto } from './dto/create-torzs-adatok.dto';
 import { UpdateTorzsAdatokDto } from './dto/update-torzs-adatok.dto';
@@ -18,17 +18,26 @@ export class TorzsAdatokController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.torzsAdatokService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {return await this.torzsAdatokService.findOne(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTorzsAdatokDto: UpdateTorzsAdatokDto) {
-    return this.torzsAdatokService.update(+id, updateTorzsAdatokDto);
+  async update(@Param('id') id: string, @Body() updateTorzsAdatokDto: UpdateTorzsAdatokDto) {
+    try {return await this.torzsAdatokService.update(+id, updateTorzsAdatokDto);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.torzsAdatokService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {return await this.torzsAdatokService.remove(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 }

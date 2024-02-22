@@ -21,7 +21,7 @@ export class OpeningController {
   async findOne(@Param('id') id: string) {
     try { return await this.openingService.findOne(+id);
     }catch{
-      throw new BadRequestException('Az IP cím nem található')
+      throw new BadRequestException('A keresett ID nem található')
     }
   }
 
@@ -29,7 +29,7 @@ export class OpeningController {
   async update(@Param('id') id: string, @Body() updateOpeningDto: UpdateOpeningDto) {
     try {return await this.openingService.update(+id, updateOpeningDto);
     }catch{
-      throw new BadRequestException('Az IP cím nem található')
+      throw new BadRequestException('A keresett ID nem található')
     }
   }
 
@@ -37,7 +37,7 @@ export class OpeningController {
   async remove(@Param('id') id: string) {
     try {return await this.openingService.remove(+id);
     }catch{
-      throw new BadRequestException('Az IP cím nem található')
+      throw new BadRequestException('A keresett ID nem található')
     }
   }
 }
