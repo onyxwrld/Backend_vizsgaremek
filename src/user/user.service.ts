@@ -6,6 +6,13 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private readonly db: PrismaService){}
+  findByEmail(email: string) {
+    return this.db.user.findUnique({
+      where: {
+        email
+      }
+    });
+  }
   create(createUserDto: CreateUserDto) {
     return this.db.user.create({
       data: createUserDto

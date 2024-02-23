@@ -64,10 +64,14 @@ model Worker {
   reservation Reservation[]
   torzsAdatok TorzsAdatok?
 }
-
+model Token{
+  token String @id
+  userId Int 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 model TorzsAdatok {
   id Int @id @default(autoincrement())
-  phone_number  Int   
+  phone_number  String   
   email         String 
   opening_hours_id Int @unique
   opening Opening @relation(fields: [opening_hours_id],references: [id])
@@ -79,12 +83,12 @@ model TorzsAdatok {
 model User {
   id         Int    @id @default(autoincrement())
   reservationID Reservation[]
+  tokens Token[]
   username   String
   email      String @unique
   password   String @unique
   first_name String
   last_name  String
-  token      String @unique
 }
 
 enum ReservationTime {

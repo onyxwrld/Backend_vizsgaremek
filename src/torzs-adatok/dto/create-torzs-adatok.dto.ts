@@ -4,7 +4,7 @@ export class CreateTorzsAdatokDto {
     @IsNotEmpty({message:'A telefon megadása kötelező'})
     @IsNumber()
     @IsPhoneNumber('HU', { message: 'Helytelen telefonszám' })
-    phone_number: number;
+    phone_number: string;
 
     @IsNotEmpty({message:'Az email megadása kötelező'})
     @IsEmail({}, { message: 'Helytelen email formátum' })
