@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
 import { WorkerService } from './worker.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { UpdateWorkerDto } from './dto/update-worker.dto';
@@ -18,17 +18,26 @@ export class WorkerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workerService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {return this.workerService.findOne(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkerDto: UpdateWorkerDto) {
-    return this.workerService.update(+id, updateWorkerDto);
+  async update(@Param('id') id: string, @Body() updateWorkerDto: UpdateWorkerDto) {
+    try {return this.workerService.update(+id, updateWorkerDto);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workerService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {return this.workerService.remove(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
   }
 }
