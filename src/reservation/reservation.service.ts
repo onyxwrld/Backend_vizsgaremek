@@ -22,7 +22,11 @@ export class ReservationService {
         where: {id},
         include: {
             user: true,
-            order: true,
+            order: {
+             include:{
+              menu: true
+             },
+            },
         }
       }
     );

@@ -12,7 +12,6 @@ export class CreateReservationDto {
   reservation_time: ReservationTime;
   @IsEnum(ReservationState)
   state: ReservationState;
-  @IsInt()
-  workers_id:number;
+
 
 }

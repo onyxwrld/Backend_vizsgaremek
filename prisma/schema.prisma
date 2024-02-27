@@ -22,8 +22,7 @@ model Menu {
   name  String
   type  MenuType
   price Int
-  orderId Int?
-  order Order? @relation(fields: [orderId], references: [id])
+  order Order[] 
 }
 
 model Order {
