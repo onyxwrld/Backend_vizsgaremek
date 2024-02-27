@@ -15,7 +15,8 @@ async function main() {
           email: faker.internet.email(),
           password: await hash('asd'),
           first_name: faker.person.firstName(),
-          last_name: faker.person.lastName()
+          last_name: faker.person.lastName(),
+          role: "User"
         }
       })
       for (let index = 0; index < menu; index++) {

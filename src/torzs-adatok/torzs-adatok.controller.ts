@@ -1,15 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Request, BadRequestException, UseGuards, ForbiddenException } from '@nestjs/common';
 import { TorzsAdatokService } from './torzs-adatok.service';
 import { CreateTorzsAdatokDto } from './dto/create-torzs-adatok.dto';
 import { UpdateTorzsAdatokDto } from './dto/update-torzs-adatok.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from '@prisma/client';
 
 @Controller('torzs-adatok')
 export class TorzsAdatokController {
   constructor(private readonly torzsAdatokService: TorzsAdatokService) {}
 
   @Post()
-  create(@Body() createTorzsAdatokDto: CreateTorzsAdatokDto) {
-    return this.torzsAdatokService.create(createTorzsAdatokDto);
+  @UseGuards(AuthGuard('bearer'))
+  create(@Body() createTorzsAdatokDto: CreateTorzsAdatokDto,@Request() req) {
+    const user: User = req.user;
+    if(user.role != 'Admin'){
+      throw new ForbiddenException();
+    }
+    else{
+      return this.torzsAdatokService.create(createTorzsAdatokDto);
+    }
   }
 
   @Get()

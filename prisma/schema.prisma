@@ -39,9 +39,7 @@ model Reservation {
   user_id          Int
   bicycle_id       Bicycle[]    
   order_id Int? @unique
-  order Order? @relation(fields: [order_id], references: [id])          
-  workers_id       Int           
-  worker Worker @relation(fields: [workers_id], references: [id])
+  order Order? @relation(fields: [order_id], references: [id])                 
   start_time       DateTime
   reservation_time ReservationTime
   state            ReservationState
@@ -57,13 +55,6 @@ model Opening{
   Sunday String
   torzsAdatok TorzsAdatok?
 }
-model Worker {
-  id         Int       @id @default(autoincrement()) 
-  name       String
-  state      EnumState
-  reservation Reservation[]
-  torzsAdatok TorzsAdatok?
-}
 model Token{
   token String @id
   userId Int 
@@ -77,28 +68,34 @@ model TorzsAdatok {
   opening Opening @relation(fields: [opening_hours_id],references: [id])
   location      String
   company_id    Int    @unique
-  worker Worker @relation(fields: [company_id], references: [id])
+  worker User @relation(fields: [company_id], references: [id])
 }
 
 model User {
   id         Int    @id @default(autoincrement())
   reservationID Reservation[]
   tokens Token[]
+  torzsadatok TorzsAdatok[]
   username   String
   email      String @unique
   password   String @unique
   first_name String
   last_name  String
+  role RoleType 
 }
 
 enum ReservationTime {
   One
   Three
-  Five
+  Fives
 }
 enum MenuType {
     Drink
   Snack
+}
+enum RoleType {
+  Admin
+  User
 }
 enum ReservationState {
   Reservation //cancelled

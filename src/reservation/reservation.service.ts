@@ -23,7 +23,6 @@ export class ReservationService {
         include: {
             user: true,
             order: true,
-            worker: true
         }
       }
     );
