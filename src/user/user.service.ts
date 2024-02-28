@@ -6,10 +6,10 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private readonly db: PrismaService){}
-  findByEmail(email: string) {
-    return this.db.user.findUnique({
+  findByUsername(username: string) {
+    return this.db.user.findFirst({
       where: {
-        email
+        username
       }
     });
   }

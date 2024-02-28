@@ -13,7 +13,7 @@ export class AuthController {
     private readonly authService: AuthService) {}
   @Post('login')
   async login(@Body() loginDto: LoginDto){
-    const user = await this.usersService.findByEmail(loginDto.email);
+    const user = await this.usersService.findByUsername(loginDto.username);
     if(user == null){
       return new UnauthorizedException('Hibás email vagy jelszó!')
     }

@@ -14,7 +14,7 @@ export class UserController {
     const user: User = req.user;
     
     return{
-      email: user.email  
+      username: user.username
     }
   }
   @Post()
