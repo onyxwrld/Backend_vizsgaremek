@@ -9,7 +9,9 @@ export class BicycleService {
 
   }
   create(createBicycleDto: CreateBicycleDto) {
-    return 'This action adds a new bicycle';
+    return this.db.bicycle.create({
+      data:createBicycleDto
+    });
   }
 
   findAll() {
