@@ -10,8 +10,14 @@ export class TokenStrategy extends PassportStrategy(Strategy){
     }
     async validate(token:string){
         const user = this.authService.findUserByToken(token);
+        const tokenInfo = this.authService.findUserTokenInfo(token);
+        const expiresAt = (await tokenInfo).expiresAt
+        const nowDate = new Date()
         if(user == null){
             throw new UnauthorizedException();
+        }
+        if(expiresAt<nowDate){
+            throw new UnauthorizedException("Kérlek jelentkez be újra, lejárt a munkamenet!");
         }
         return user;
     }
