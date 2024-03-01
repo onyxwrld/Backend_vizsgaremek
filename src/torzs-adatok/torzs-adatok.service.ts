@@ -6,7 +6,7 @@ import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Injectable()
 export class TorzsAdatokService {
-  constructor (private readonly db: PrismaService){
+  constructor(private readonly db: PrismaService) {
 
   }
   create(createTorzsAdatokDto: CreateTorzsAdatokDto) {
@@ -17,20 +17,36 @@ export class TorzsAdatokService {
     return this.db.torzsAdatok.findMany({
       include: {
         opening: true,
-        worker: true
+        worker: {
+          select: {
+            last_name: true,
+            first_name: true
+          }
+        }
       }
     });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} torzsAdatok`;
+    return this.db.torzsAdatok.findFirstOrThrow({
+      where:{id},
+      include:{
+        opening:true,
+        worker:{
+          select:{
+            last_name: true,
+            first_name:true
+          }
+        }
+      }
+    });
   }
 
   update(id: number, updateTorzsAdatokDto: UpdateTorzsAdatokDto) {
     return this.db.torzsAdatok.update(
       {
         data: updateTorzsAdatokDto,
-        where: {id}
+        where: { id }
       }
     )
   }
