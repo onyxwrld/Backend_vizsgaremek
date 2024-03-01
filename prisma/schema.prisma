@@ -97,7 +97,7 @@ enum RoleType {
   User
 }
 enum ReservationState {
-  Reservation //cancelled
+  Cancelled
   Pending
   Done
 }
