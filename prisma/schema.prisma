@@ -46,7 +46,7 @@ model Reservation {
 model Opening{
   id Int @id @default(autoincrement())
   Monday String
-  Tesday String
+  Tuesday String
   Wednesday String
   Thursday String
   Friday String
@@ -66,7 +66,7 @@ model TorzsAdatok {
   opening_hours_id Int @unique
   opening Opening @relation(fields: [opening_hours_id],references: [id])
   location      String
-  company_id    Int    @unique
+  company_id    Int    
   worker User @relation(fields: [company_id], references: [id])
 }
 

@@ -60,19 +60,30 @@ async function main() {
         }
         )
       }
-      /*let opening_hours_id: number | undefined;
-      let company_id: number | undefined;
-      await prisma.torzsAdatok.create({
-        data:{
-          phone_number: '63000000',
-          email: 'asd@asd.com',
-          opening_hours_id,
-          location: '1111 Budapest csimpánz utca 23',
-          company_id
-        }
-      })
-      */
+      
+      
     }
+    await prisma.opening.create({
+      data:{
+        Monday: "8-16",
+        Tuesday:"8-16",
+        Wednesday:"8-16",
+        Thursday:"8-16",
+        Friday:"8-20",
+        Sasturday:"10-13",
+        Sunday:"Closed",
+
+      }
+    })
+        await prisma.torzsAdatok.create({
+      data:{
+        phone_number: '63000000',
+        email: 'asd@asd.com',
+        location: '1111 Budapest csimpánz utca 23',
+        opening:{connect:{ id: 1 }},
+        worker:{connect:{id:1}}
+      }
+    })
     
   } finally {
     prisma.$disconnect();
