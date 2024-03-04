@@ -15,10 +15,10 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto){
     const user = await this.usersService.findByUsername(loginDto.username);
     if(user == null){
-      return new UnauthorizedException('Hibás email vagy jelszó!')
+      throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
     if(!await verify(user.password,loginDto.password)){
-      return new UnauthorizedException('Hibás email vagy jelszó!')
+      throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
 
     return {
