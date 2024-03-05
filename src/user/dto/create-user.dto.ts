@@ -1,9 +1,9 @@
-import { IsEmail, IsNotEmpty, IsString, Max, Min } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Max, MaxLength, Min, MinLength, min } from "class-validator";
 import { RoleType } from "@prisma/client";
 export class CreateUserDto {
     @IsNotEmpty({message:'A név megadása kötelező'})
-    @Max(20,{message:"A név maximum 20 karakter lehet"})
-    @Min(3,{message:"A név minimum 3 karakter kell hogy legyen"})
+    @MaxLength(20,{message:"A név maximum 20 karakter lehet"})
+    @MinLength(3,{message:"A név minimum 3 karakter kell hogy legyen"})
     username: string;
     
     @IsNotEmpty({ message: 'Az e-mail cím megadása kötelező.' })
@@ -11,7 +11,7 @@ export class CreateUserDto {
     email: string;
 
     @IsNotEmpty({ message: 'A jelszó megadása kötelező.' })
-    @Min(6, { message: 'A jelszó minimum 6 karakter kell hogy legyen.' })
+    @MinLength(6, { message: 'A jelszó minimum 6 karakter kell hogy legyen.' })
     password: string;
 
     @IsString({ message: 'A keresztnévnek szöveges típusúnak kell lennie.' })

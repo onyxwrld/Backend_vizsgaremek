@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
+import { hash } from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -13,9 +14,20 @@ export class UserService {
       }
     });
   }
-  create(createUserDto: CreateUserDto) {
+  findByUserEmail(email: string) {
+    return this.db.user.findUnique({
+      where: {email}
+    })
+  }
+   async createUser(createUserDto: CreateUserDto) {
     return this.db.user.create({
-      data: createUserDto
+      data: {
+        ...createUserDto,
+        password: await hash(createUserDto.password),
+        role:"User",
+       
+        
+      }
     })
   }
 

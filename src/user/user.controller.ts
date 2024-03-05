@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards,BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards,BadRequestException, ConflictException, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,9 +17,16 @@ export class UserController {
       username: user.username
     }
   }
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('register')
+  async create(@Body() createUserDto: CreateUserDto) {
+
+
+    const user = await this.userService.findByUserEmail(createUserDto.email)
+    if(user){
+      throw new ConflictException("Email already exist!")
+    }
+
+    return this.userService.createUser(createUserDto);
   }
 
   @Get()
