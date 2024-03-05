@@ -20,10 +20,13 @@ export class UserController {
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
 
-
-    const user = await this.userService.findByUserEmail(createUserDto.email)
-    if(user){
+    const user = await this.userService.findByUsername(createUserDto.username)
+    const email = await this.userService.findByUserEmail(createUserDto.email)
+    if(email){
       throw new ConflictException("Email already exist!")
+    }
+    if(user){
+      throw new ConflictException("Username already exist!")
     }
 
     return this.userService.createUser(createUserDto);
