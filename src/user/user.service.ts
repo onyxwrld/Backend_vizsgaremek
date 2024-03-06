@@ -43,7 +43,16 @@ export class UserService {
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.db.user.update({
-      data: updateUserDto,
+      data: {email:updateUserDto.email,
+      first_name:updateUserDto.first_name,
+      last_name:updateUserDto.last_name,
+      username:updateUserDto.username},
+      where: {id}
+    })
+  }
+  updateRole(id: number, updateUserDto: UpdateUserDto){
+    return this.db.user.update({
+      data: {role:updateUserDto.role},
       where: {id}
     })
   }

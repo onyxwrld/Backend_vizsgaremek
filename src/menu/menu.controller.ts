@@ -38,13 +38,12 @@ export class MenuController {
   @UseGuards(AuthGuard('bearer'))
   async update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto, @Request() req) {
     const user: User = req.user;
-    try {
       if (user.role != 'Admin') {
-        throw new ForbiddenException();
-      } else {
+        throw new ForbiddenException();}
+      try{
         return await this.menuService.update(+id, updateMenuDto);
       }
-    } catch {
+    catch {
       throw new BadRequestException('A keresett ID nem található')
     }
   }
