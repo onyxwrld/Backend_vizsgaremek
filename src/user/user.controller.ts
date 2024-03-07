@@ -99,6 +99,11 @@ export class UserController {
       throw new UnauthorizedException('Hibás régi jelszót adtál meg!')
     }
 
+    if(await verify(user.password,changePassDto.newpass)){
+      throw new UnauthorizedException('Nem adhatod meg ugyan azt a jelszót mint amit régen.')
+    }
+
+
     return await this.userService.updatePass(+id,changePassDto) && await this.authService.ChangePassDeleteToken(parseInt(id))
     
 

@@ -14,15 +14,23 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto){
     const user = await this.usersService.findByUsername(loginDto.username);
+    const userId = user.id
+    const userInfo = await this.usersService.findOne(userId)
+    const role = userInfo.role
+
     if(user == null){
       throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
     if(!await verify(user.password,loginDto.password  )){
       throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
+    if(user.role !='Admin'){
+    }
 
     return {
-      token: await this.authService.generateTokenFor(user)
+      token: await this.authService.generateTokenFor(user) ,
+      role: await role
+      
     }
   }
 }
