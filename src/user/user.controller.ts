@@ -1,13 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, BadRequestException, ConflictException, ValidationPipe, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, BadRequestException, ConflictException, ValidationPipe, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
+import { ChangePassDto } from './dto/changepass.dto';
+import { verify } from 'argon2';
+import { AuthService } from 'src/auth/auth.service';
+import { PassportModule } from '@nestjs/passport';
+import { LoginDto } from 'src/auth/dto/Login.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService
+    ) { }
   @Get('me')
   @UseGuards(AuthGuard('bearer'))
   me(@Request() req) {
@@ -74,6 +82,26 @@ export class UserController {
      catch {
       throw new BadRequestException('A keresett ID nem található')
     }
+  }
+  
+  @Patch(':id/changepass')
+  @UseGuards(AuthGuard('bearer'))
+  async updatePass(@Param('id') id:string, @Body() changePassDto: ChangePassDto,@Request() req){
+    const user = await this.userService.findOne(parseInt(id))
+    if(user.id!=parseInt(id)  ){
+      throw new ForbiddenException()
+    }
+    if(changePassDto.oldpass == null){
+      throw new ForbiddenException('Kérlek add meg a régi jelszavad!')
+    }
+
+    if(!await verify(user.password,changePassDto.oldpass)){
+      throw new UnauthorizedException('Hibás régi jelszót adtál meg!')
+    }
+
+    return await this.userService.updatePass(+id,changePassDto) && await this.authService.ChangePassDeleteToken(parseInt(id))
+    
+
   }
 
   @Delete(':id')

@@ -24,6 +24,13 @@ export class AuthService {
             where:{token: tokenObj.token},
         })
     }
+    async ChangePassDeleteToken(id:number){
+        await this.db.token.deleteMany({
+            where:{
+                userId: id
+            }
+        });
+    }
     constructor(private readonly db: PrismaService){}
   async generateTokenFor(user: User) {
     const randomBuffer = randomBytes(32);

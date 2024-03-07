@@ -17,7 +17,7 @@ export class AuthController {
     if(user == null){
       throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
-    if(!await verify(user.password,loginDto.password)){
+    if(!await verify(user.password,loginDto.password  )){
       throw new UnauthorizedException('Hibás email vagy jelszó!')
     }
 

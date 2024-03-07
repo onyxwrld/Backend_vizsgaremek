@@ -14,12 +14,15 @@ export class TokenStrategy extends PassportStrategy(Strategy){
     async validate(token:string){
         const user = this.authService.findUserByToken(token);
         let tokenInfo: Token;
+        tokenInfo = await this.authService.findUserTokenInfo(token);
+        let expiresAt
         try{
-            tokenInfo = await this.authService.findUserTokenInfo(token);
+           
+            expiresAt = tokenInfo.expiresAt
         }
         catch{throw new UnauthorizedException()}
         
-        const expiresAt = tokenInfo.expiresAt 
+         
         const nowDate = new Date()
         if(user == null){
             throw new UnauthorizedException();

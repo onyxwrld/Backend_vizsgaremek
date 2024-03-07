@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { hash } from 'argon2';
+import { ChangePassDto } from './dto/changepass.dto';
 
 @Injectable()
 export class UserService {
@@ -36,7 +37,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.db.user.findUniqueOrThrow({
+    return this.db.user.findUnique({
       where: {id}
     })
   }
@@ -55,6 +56,15 @@ export class UserService {
       data: {role:updateUserDto.role},
       where: {id}
     })
+  }
+
+  async updatePass(id: number, changePassDto: ChangePassDto){
+    return this.db.user.update({
+      data: {password:changePassDto.newpass},
+      where:{id}
+
+    })
+
   }
 
   remove(id: number) {
