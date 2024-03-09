@@ -75,6 +75,7 @@ model User {
   id         Int    @id @default(autoincrement())
   reservationID Reservation[]
   tokens Token[]
+  reviews Review[]
   torzsadatok TorzsAdatok[]
   username   String @unique
   email      String @unique
@@ -83,7 +84,13 @@ model User {
   last_name  String
   role RoleType 
 }
-
+model Review{
+    id         Int    @id @default(autoincrement())
+    rate Int
+    content String
+    userId Int
+    user User @relation(fields: [userId], references: [id])
+}
 enum ReservationTime {
   One
   Three
