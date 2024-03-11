@@ -22,7 +22,10 @@ export class UserController {
     const user: User = req.user;
 
     return {
-      username: user.username
+      username: user.username,
+      email: user.email,
+      lastName: user.last_name,
+      firstName: user.first_name,
     }
   }
   @Post('register')

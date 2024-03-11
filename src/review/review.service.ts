@@ -2,15 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { PrismaService } from 'src/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class ReviewService {
-  constructor (private readonly db:PrismaService){
+  constructor(private readonly db: PrismaService) {
 
   }
   create(createReviewDto: CreateReviewDto) {
     return this.db.review.create({
-        data: createReviewDto
+
+      data: {
+        rate: createReviewDto.rate,
+        content: createReviewDto.content,
+        user: {
+          connect: {
+            id: 1
+          }
+        }
+      }
     });
   }
 
@@ -20,7 +30,14 @@ export class ReviewService {
 
   findOne(id: number) {
     return this.db.review.findUniqueOrThrow({
-      where:{id}
+      where: { id },
+      include: {
+        user: {
+          select: {
+            username: true
+          }
+        }
+      }
     });
   }
 
