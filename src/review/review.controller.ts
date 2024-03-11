@@ -13,7 +13,7 @@ export class ReviewController {
   @Post()
   @UseGuards(AuthGuard('bearer'))
   create(@Body() createReviewDto: CreateReviewDto,@Request() req) {
-    return this.reviewService.create(createReviewDto);
+    return this.reviewService.create(createReviewDto,req.user.id);
   }
 
   @Get()
@@ -21,7 +21,12 @@ export class ReviewController {
     return this.reviewService.findAll();
   }
 
-  
+  @Get('userid/:id')
+  @UseGuards(AuthGuard('bearer'))
+  findReviewByUserId(@Param('id') id:string,@Request() req){
+   return this.reviewService.findReviewByUserId(id); 
+  }
+
   @Get(':id')
   @UseGuards(AuthGuard('bearer'))
   findOne(@Param('id') id: string,@Request() req) {

@@ -24,8 +24,8 @@ export class UserController {
     return {
       username: user.username,
       email: user.email,
-      lastName: user.last_name,
-      firstName: user.first_name,
+      last_name: user.last_name,
+      first_name: user.first_name,
     }
   }
   @Post('register')

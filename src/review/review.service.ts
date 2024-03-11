@@ -9,7 +9,7 @@ export class ReviewService {
   constructor(private readonly db: PrismaService) {
 
   }
-  create(createReviewDto: CreateReviewDto) {
+  create(createReviewDto: CreateReviewDto, userId: number) {
     return this.db.review.create({
 
       data: {
@@ -17,7 +17,7 @@ export class ReviewService {
         content: createReviewDto.content,
         user: {
           connect: {
-            id: 1
+            id: userId
           }
         }
       }
@@ -47,5 +47,14 @@ export class ReviewService {
 
   remove(id: number) {
     return `This action removes a #${id} review`;
+  }
+  findReviewByUserId(userId:string){
+    return this.db.review.findMany({
+      where: {
+        user: {
+          id: parseInt(userId)
+        }
+      }
+    })
   }
 }
