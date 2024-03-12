@@ -28,6 +28,12 @@ export class ReviewService {
     return this.db.review.findMany();
   }
 
+  findOneId(id:number){
+    return this.db.review.findUniqueOrThrow({
+      where:{id}
+    })
+  }
+
   findOne(id: number) {
     return this.db.review.findUniqueOrThrow({
       where: { id },
@@ -46,7 +52,9 @@ export class ReviewService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} review`;
+    return this.db.review.delete({
+      where:{id}
+    });
   }
   findReviewByUserId(userId:string){
     return this.db.review.findMany({

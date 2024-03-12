@@ -8,7 +8,9 @@ import { ESLint } from 'eslint';
 
 @Controller('review')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) { }
+  constructor(
+    private readonly reviewService: ReviewService
+    ) { }
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
@@ -46,10 +48,12 @@ export class ReviewController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('bearer'))
-  remove(@Param('id') id: string, @Request() req) {
+  async remove(@Param('id') id: string, @Request() req) {
     const user: User = req.user;
-    const review = req.user.id;
-    if (user.id != review) {
+    const review = await this.reviewService.findOneId(parseInt(id))
+
+
+    if (user.id != review.userId) {
       throw new UnauthorizedException("Törléshez jelentkezzen be!");
     }
     else {
