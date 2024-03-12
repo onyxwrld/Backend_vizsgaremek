@@ -36,7 +36,7 @@ export class AuthService {
     const randomBuffer = randomBytes(32);
     const randomString = randomBuffer.toString('hex');
     const expirationTime = new Date();
-    expirationTime.setHours(expirationTime.getHours()+1)
+    expirationTime.setHours(expirationTime.getHours()+5)
 
 
 

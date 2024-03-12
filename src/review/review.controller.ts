@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -8,12 +8,12 @@ import { ESLint } from 'eslint';
 
 @Controller('review')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) { }
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
-  create(@Body() createReviewDto: CreateReviewDto,@Request() req) {
-    return this.reviewService.create(createReviewDto,req.user.id);
+  create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
+    return this.reviewService.create(createReviewDto, req.user.id);
   }
 
   @Get()
@@ -23,14 +23,19 @@ export class ReviewController {
 
   @Get('userid/:id')
   @UseGuards(AuthGuard('bearer'))
-  findReviewByUserId(@Param('id') id:string,@Request() req){
-   return this.reviewService.findReviewByUserId(id); 
+  findReviewByUserId(@Param('id') id: string, @Request() req) {
+    if (req.user.id != id) {
+      throw new UnauthorizedException();
+    }
+    else {
+      return this.reviewService.findReviewByUserId(id);
+    }
   }
 
   @Get(':id')
   @UseGuards(AuthGuard('bearer'))
-  findOne(@Param('id') id: string,@Request() req) {
-    const user:User=req.user;
+  findOne(@Param('id') id: string, @Request() req) {
+    const user: User = req.user;
     return this.reviewService.findOne(+id);
   }
 
@@ -41,13 +46,13 @@ export class ReviewController {
 
   @Delete(':id')
   @UseGuards(AuthGuard('bearer'))
-  remove(@Param('id') id: string,@Request() req) {
-    const user:User= req.user;
-    const review:Review= req.review;
-    if(user.id != review.userId){
-      throw new UnauthorizedException("Törlés jelentkezzen be!");
+  remove(@Param('id') id: string, @Request() req) {
+    const user: User = req.user;
+    const review = req.user.id;
+    if (user.id != review) {
+      throw new UnauthorizedException("Törléshez jelentkezzen be!");
     }
-    else{
+    else {
       return this.reviewService.remove(+id);
     }
   }
