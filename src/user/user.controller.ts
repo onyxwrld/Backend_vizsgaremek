@@ -22,6 +22,7 @@ export class UserController {
     const user: User = req.user;
 
     return {
+      id: user.id,
       username: user.username,
       email: user.email,
       last_name: user.last_name,
