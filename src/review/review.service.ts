@@ -25,7 +25,15 @@ export class ReviewService {
   }
 
   findAll() {
-    return this.db.review.findMany();
+    return this.db.review.findMany({
+      include:{
+        user:{
+          select:{
+            username:true
+          }
+        }
+      }
+    });
   }
 
   findOneId(id:number){
