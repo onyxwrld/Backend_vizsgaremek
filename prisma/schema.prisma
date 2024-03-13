@@ -40,6 +40,7 @@ model Reservation {
   order_id Int? @unique
   order Order? @relation(fields: [order_id], references: [id])                 
   start_time       DateTime
+  end_time  DateTime
   reservation_time ReservationTime
   state            ReservationState
 }
