@@ -46,13 +46,22 @@ export class ReviewService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} review`;
+    return this.db.review.delete({
+      where:{id}
+    })
   }
   findReviewByUserId(userId:string){
     return this.db.review.findMany({
       where: {
         user: {
           id: parseInt(userId)
+        }
+      },
+      include:{
+        user:{
+          select:{
+            username:true
+          }
         }
       }
     })
