@@ -19,15 +19,7 @@ export class ReservationService {
   findOne(id: number) {
     return this.db.reservation.findUniqueOrThrow(
       {
-        where: {id},
-        include: {
-            user: true,
-            order: {
-             include:{
-              menu: true
-             },
-            },
-        }
+        where: {id}
       }
     );
   }

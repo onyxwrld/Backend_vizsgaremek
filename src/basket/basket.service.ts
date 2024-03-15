@@ -2,28 +2,39 @@ import { Injectable } from '@nestjs/common';
 import { CreateBasketDto } from './dto/create-basket.dto';
 import { UpdateBasketDto } from './dto/update-basket.dto';
 import { PrismaService } from 'src/prisma.service';
+import { Menu, User } from '@prisma/client';
 
 @Injectable()
 export class BasketService {
   constructor (private readonly db: PrismaService){
 
   }
-  create(createBasketDto: CreateBasketDto,menuId:number,userId:number) {
-    return this.db.basket.create({
-      data:{
-        total_amount:createBasketDto.total_amount,
-        menu:{
-          connect:{
-            id: menuId
-          }
+  async create( menuItems: Menu[],user:number) {
+    
+    try {
+      await this.db.basket.deleteMany({});
+      const basket = await this.db.basket.create({
+        data: {
+          total_amount: 0,
+          menu: {
+            connect: menuItems.map((menuItem) => (
+              { id: menuItem.id }
+              )),
+          },
+          user: {
+             connect: { 
+              id: user } },
         },
-        user:{
-          connect:{
-            id:userId
-          }
-        }
-      }
-    });
+      });
+      await this.db.user.update({
+        where: { id: user },
+        data: { basket: { connect: { id: basket.id } } },
+      });
+      return basket;
+    } catch (error) {
+      // Hibakezelés
+      throw new Error(`Failed to create basket: ${error.message}`);
+    }
   }
 
   findAll() {

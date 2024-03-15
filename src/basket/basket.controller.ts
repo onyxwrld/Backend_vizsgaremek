@@ -4,6 +4,7 @@ import { CreateBasketDto } from './dto/create-basket.dto';
 import { UpdateBasketDto } from './dto/update-basket.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateMenuDto } from 'src/menu/dto/create-menu.dto';
+import { Menu, User } from '@prisma/client';
 
 @Controller('basket')
 export class BasketController {
@@ -11,11 +12,10 @@ export class BasketController {
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
-  create(@Body() createBasketDto: CreateBasketDto,@Request() req,createMenuDto: CreateMenuDto,)
-  
+  create(@Body() createBasketDto: CreateBasketDto, @Request() req, @Body() menuItems: Menu[])
   {
-    const menu = Menu
-    return this.basketService.create(createBasketDto, req.user.id,createMenuDto.);
+    const user = req.user.id;
+    return this.basketService.create(menuItems, user);
   }
 
   @Get()
