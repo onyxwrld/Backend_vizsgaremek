@@ -38,6 +38,13 @@ async function main() {
       role: "Admin"
     }
   })
+  await prisma.basket.create({
+    data:{
+      total_amount:10000,
+      user:{connect:{id:1}}
+      
+    }
+  })
     for (let i = 0; i < user; i++) {
       await prisma.user.create({
         data: {
@@ -50,12 +57,11 @@ async function main() {
         }
       })
       for (let index = 0; index < menu; index++) {
-        let orderId : number| undefined;
         await prisma.menu.create({
           data: {
             name: faker.music.songName(),
             type: faker.helpers.arrayElement(['Drink','Snack']),
-            price: faker.number.int({min:10000, max:200000})
+            price: faker.number.int({min:10000, max:200000}),
           }
         }
         )

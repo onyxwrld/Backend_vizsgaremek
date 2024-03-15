@@ -22,27 +22,39 @@ model Menu {
   name  String
   type  MenuType
   price Int
-  order Order[] 
+  basket Basket[]
+  baskethistory BasketHistory[] 
 }
 
-model Order {
+model Basket {
   id             Int @id @default(autoincrement())
   total_amount Int //tárolt eljárás
+
   menu Menu[]
-  reservation Reservation? 
+  user User @relation(fields: [userId],references: [id])
+  userId Int @unique
+  
+}
+
+model BasketHistory{
+  id Int @id @default(autoincrement())
+  total_amount Int 
+  menu Menu[]
+  reservation Reservation @relation(fields: [reservationId],references: [id])
+  reservationId Int @unique
+
 }
 
 model Reservation {
   id               Int              @id @default(autoincrement())
   user User @relation(fields: [user_id], references: [id])
   user_id          Int
-  bicycle_id       Bicycle[]    
-  order_id Int? @unique
-  order Order? @relation(fields: [order_id], references: [id])                 
+  bicycle_id       Bicycle[]         
   start_time       DateTime
   end_time  DateTime
   reservation_time ReservationTime
   state            ReservationState
+  baskethistory BasketHistory?
 }
 model Opening{
   id Int @id @default(autoincrement())
@@ -78,6 +90,7 @@ model User {
   tokens Token[]
   reviews Review[]
   torzsadatok TorzsAdatok[]
+  basket Basket?
   username   String @unique
   email      String @unique
   password   String @unique

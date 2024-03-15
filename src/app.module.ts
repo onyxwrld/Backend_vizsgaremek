@@ -11,9 +11,10 @@ import { OpeningModule } from './opening/opening.module';
 import { MenuModule } from './menu/menu.module';
 import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
+import { BasketModule } from './basket/basket.module';
 @Module({
   imports: [BicycleModule, UserModule, OrderModule, 
-    TorzsAdatokModule, BicycleModule, ReservationModule, OpeningModule, MenuModule, AuthModule, ReviewModule],
+    TorzsAdatokModule, BicycleModule, ReservationModule, OpeningModule, MenuModule, AuthModule, ReviewModule, BasketModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
