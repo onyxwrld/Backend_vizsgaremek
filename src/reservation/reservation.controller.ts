@@ -12,7 +12,7 @@ export class ReservationController {
   @Post()
   @UseGuards(AuthGuard('bearer'))
   create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
-    return this.reservationService.create(createReservationDto);
+    return this.reservationService.create(createReservationDto,req.user.id);
   }
 
   @Get()
