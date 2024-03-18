@@ -3,7 +3,7 @@ import { IsDateString, IsEnum, IsInt } from "class-validator";
 
 export class CreateReservationDto {  
   @IsInt()
-  user_id: number;
+  user_id:number;
   @IsDateString()
   start_time: string;
   @IsDateString()

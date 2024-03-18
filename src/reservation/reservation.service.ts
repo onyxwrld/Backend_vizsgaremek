@@ -2,24 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { PrismaService } from 'src/prisma.service';
-import { CreateBasketDto } from 'src/basket/dto/create-basket.dto';
-
 @Injectable()
 export class ReservationService {
-  constructor (private readonly db:PrismaService,private readonly createBasketDTO: CreateBasketDto){
+  constructor(private readonly db: PrismaService) { }
+  create(createReservationDto: CreateReservationDto, user_id: number) {
+    
 
-  }
-   create(createReservationDto: CreateReservationDto,user_id:number) {
-     return this.db.reservation.create({
+    return this.db.reservation.create({
       data: {
-        
+        state: "Pending",
+        start_time: createReservationDto.start_time,
+        end_time:createReservationDto.end_time,
+        reservation_time:createReservationDto.reservation_time,
         user:{
           connect:{
-            id: user_id
+            id:user_id
           }
-        },
-        state: "Pending",
-        ...createReservationDto
+        }
       }
     });
   }
@@ -31,7 +30,7 @@ export class ReservationService {
   findOne(id: number) {
     return this.db.reservation.findUniqueOrThrow(
       {
-        where: {id}
+        where: { id }
       }
     );
   }
@@ -39,14 +38,14 @@ export class ReservationService {
   update(id: number, updateReservationDto: UpdateReservationDto) {
     return this.db.reservation.update({
       data: updateReservationDto,
-      where: {id}
+      where: { id }
     })
   }
 
   remove(id: number) {
     return this.db.reservation.delete(
       {
-        where: { id}
+        where: { id }
       }
     );
   }
