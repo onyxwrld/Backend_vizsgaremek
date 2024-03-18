@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Request, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Request, Delete, UseGuards, BadRequestException } from '@nestjs/common';
 import { BasketService } from './basket.service';
 import { CreateBasketDto } from './dto/create-basket.dto';
 import { UpdateBasketDto } from './dto/update-basket.dto';
@@ -27,8 +27,13 @@ export class BasketController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basketService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try{
+      return await this.basketService.findOne(+id)
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
+    
   }
 
   @Patch(':id')
@@ -37,7 +42,12 @@ export class BasketController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.basketService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try{ 
+      return this.basketService.remove(+id);
+    }catch{
+      throw new BadRequestException('A keresett ID nem található')
+    }
+   
   }
 }
