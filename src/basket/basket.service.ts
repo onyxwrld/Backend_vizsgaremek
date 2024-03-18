@@ -9,30 +9,23 @@ export class BasketService {
   constructor (private readonly db: PrismaService){
 
   }
-  async create( menuItems: Menu[],user:number) {
-    
+  async create(menuPrice:number,menu:number,user:number) {
     try {
-      await this.db.basket.deleteMany({});
       const basket = await this.db.basket.create({
         data: {
-          total_amount: 0,
+          total_amount: menuPrice ,
           menu: {
-            connect: menuItems.map((menuItem) => (
-              { id: menuItem.id }
-              )),
+            connect:{
+              id: menu
+            }
           },
           user: {
              connect: { 
               id: user } },
         },
       });
-      await this.db.user.update({
-        where: { id: user },
-        data: { basket: { connect: { id: basket.id } } },
-      });
       return basket;
     } catch (error) {
-      // Hibakezelés
       throw new Error(`Failed to create basket: ${error.message}`);
     }
   }

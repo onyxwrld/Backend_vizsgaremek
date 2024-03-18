@@ -12,10 +12,13 @@ export class BasketController {
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
-  create(@Body() createBasketDto: CreateBasketDto, @Request() req, @Body() menuItems: Menu[])
+  create(@Body() createBasketDto: CreateBasketDto, @Request() req)
   {
     const user = req.user.id;
-    return this.basketService.create(menuItems, user);
+    const menu = createBasketDto.menu;
+
+    const menuPrice = createBasketDto.menuPrice;
+    return this.basketService.create(menuPrice,menu, user);
   }
 
   @Get()

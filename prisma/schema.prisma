@@ -27,13 +27,11 @@ model Menu {
 }
 
 model Basket {
-  id             Int @id @default(autoincrement())
+  id             Int @id @default(autoincrement()) 
   total_amount Int //tárolt eljárás
-
   menu Menu[]
   user User @relation(fields: [userId],references: [id])
-  userId Int @unique
-  
+  userId  Int 
 }
 
 model BasketHistory{
@@ -90,7 +88,7 @@ model User {
   tokens Token[]
   reviews Review[]
   torzsadatok TorzsAdatok[]
-  basket Basket?
+  basket Basket[]
   username   String @unique
   email      String @unique
   password   String @unique

@@ -38,13 +38,6 @@ async function main() {
       role: "Admin"
     }
   })
-  await prisma.basket.create({
-    data:{
-      total_amount:10000,
-      user:{connect:{id:1}}
-      
-    }
-  })
     for (let i = 0; i < user; i++) {
       await prisma.user.create({
         data: {
