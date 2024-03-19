@@ -39,8 +39,8 @@ model Reservation {
   user User @relation(fields: [user_id], references: [id])
   user_id          Int
   bicycle_id       Bicycle[]         
-  start_time       DateTime
-  end_time  DateTime
+  start_time       String
+  end_time  String
   reservation_time ReservationTime
   state            ReservationState
 }

@@ -16,8 +16,9 @@ export class ReservationController {
   }
 
   @Get()
-  findAll() {
-    return this.reservationService.findAll();
+  @UseGuards(AuthGuard('bearer'))
+  findAll( @Request() req) {
+    return this.reservationService.findAll(req.user.id);
   }
 
   @Get(':id')
