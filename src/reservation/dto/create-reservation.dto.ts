@@ -13,6 +13,7 @@ export class CreateReservationDto {
   reservation_time: ReservationTime;
   @Optional()
   state: ReservationState;
+  total_amount: number;
 
 
 }

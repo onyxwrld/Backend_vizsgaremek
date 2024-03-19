@@ -6,36 +6,57 @@ import { Menu, User } from '@prisma/client';
 
 @Injectable()
 export class BasketService {
-  constructor (private readonly db: PrismaService){
+  constructor(private readonly db: PrismaService) {
 
   }
-  async create(menuPrice:number,menu:number,user:number) {
+  async create(menuPrice: number, menu: number, user: number) {
     try {
-      const basket = await this.db.basket.create({
-        data: {
-          total_amount: menuPrice ,
-          menu: {
-            connect:{
-              id: menu
+      const existingBasket = this.db.basket.findFirst({
+        where: { userId: user }
+      })
+      if (existingBasket) {
+        const basket = await this.db.basket.update({
+          data: {
+            menu: {
+              connect: {
+                id: menu
+              }
             }
           },
-          user: {
-             connect: { 
-              id: user } },
-        },
-      });
-      return basket;
+          where: {
+            id: (await existingBasket).id
+          } 
+        }
+        )
+        return basket;
+      } else {
+        const newbasket = await this.db.basket.create({
+          data: {
+            menu: {
+              connect: {
+                id: menu
+              }
+            },
+            user: {
+              connect: {
+                id: user
+              }
+            }
+          }
+        })
+        return newbasket;
+      }
     } catch (error) {
       throw new Error(`Failed to create basket: ${error.message}`);
     }
   }
 
-  findAll(userId:number) {
+  findAll(userId: number) {
     return this.db.basket.findMany({
-      include:{
+      include: {
         menu: true
       },
-      where:{userId}
+      where: { userId }
     });
   }
 
@@ -44,7 +65,7 @@ export class BasketService {
   }
 
   update(id: number, updateBasketDto: UpdateBasketDto) {
-    return `This action updates a #${id} basket`;
+    return 'This action update basket.';
   }
 
   remove(id: number) {

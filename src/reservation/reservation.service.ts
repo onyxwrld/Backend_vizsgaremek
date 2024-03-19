@@ -17,6 +17,7 @@ export class ReservationService {
         start_time: createReservationDto.start_time,
         end_time:createReservationDto.end_time,
         reservation_time:createReservationDto.reservation_time,
+        total_amount: 0,
         user:{
           connect:{
             id:user_id
@@ -26,17 +27,41 @@ export class ReservationService {
     });
   }
 
-  findAll(user_id:number) {
-    return this.db.reservation.findMany({
+  async findAll(user_id:number) {
+    const reservations = await  this.db.reservation.findMany({
       include: {
         user: {
-          select: { basket: {
-            select:{
-              menu:true,total_amount:true
+          include:
+          {
+            basket:
+            {
+              include:
+              {
+                menu:
+                {
+                  select:
+                  {
+                    price:true
+                  }
+                }
+              }
             }
-          } } 
+          }
         }
       },where:{user_id}});
+
+     for (let reservation of reservations){
+      let total_sum = 0;
+        for(let users of reservation.user.basket){
+          
+          for(let menuitems of users.menu ){
+            total_sum += menuitems.price
+          }
+          
+        }
+        ;reservation.total_amount = total_sum;
+     } 
+     return reservations;
   }
 
   findOne(id: number) {

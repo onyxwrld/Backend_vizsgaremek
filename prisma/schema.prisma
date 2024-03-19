@@ -27,7 +27,6 @@ model Menu {
 
 model Basket {
   id             Int @id @default(autoincrement()) 
-  total_amount Int //tárolt eljárás
   menu Menu[]
   user User @relation(fields: [userId],references: [id])
   userId  Int 
@@ -44,6 +43,7 @@ model Reservation {
   end_time  String
   reservation_time ReservationTime
   state            ReservationState
+  total_amount Int //tárolt eljárás
 }
 model Opening{
   id Int @id @default(autoincrement())
