@@ -30,8 +30,10 @@ export class BasketService {
     }
   }
 
-  findAll() {
-    return `This action returns all basket`;
+  findAll(id:number) {
+    return this.db.basket.findMany({
+      where:{id}
+    });
   }
 
   findOne(id: number) {

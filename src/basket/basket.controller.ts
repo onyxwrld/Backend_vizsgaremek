@@ -22,8 +22,12 @@ export class BasketController {
   }
 
   @Get()
-  findAll() {
-    return this.basketService.findAll();
+  @UseGuards(AuthGuard('bearer'))
+  findAll(@Request() req) {
+
+    const user = req.user.id
+
+    return this.basketService.findAll(user);
   }
 
   @Get(':id')
