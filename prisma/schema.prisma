@@ -22,8 +22,7 @@ model Menu {
   name  String
   type  MenuType
   price Int
-  basket Basket[]
-  baskethistory BasketHistory[] 
+  basket Basket[] 
 }
 
 model Basket {
@@ -34,14 +33,6 @@ model Basket {
   userId  Int 
 }
 
-model BasketHistory{
-  id Int @id @default(autoincrement())
-  total_amount Int 
-  menu Menu[]
-  reservation Reservation @relation(fields: [reservationId],references: [id])
-  reservationId Int @unique
-
-}
 
 model Reservation {
   id               Int              @id @default(autoincrement())
@@ -52,7 +43,6 @@ model Reservation {
   end_time  DateTime
   reservation_time ReservationTime
   state            ReservationState
-  baskethistory BasketHistory?
 }
 model Opening{
   id Int @id @default(autoincrement())
