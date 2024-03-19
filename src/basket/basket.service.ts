@@ -30,9 +30,12 @@ export class BasketService {
     }
   }
 
-  findAll(id:number) {
+  findAll(userId:number) {
     return this.db.basket.findMany({
-      where:{id}
+      include:{
+        menu: true
+      },
+      where:{userId}
     });
   }
 

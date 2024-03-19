@@ -1,3 +1,4 @@
+import { Optional } from "@nestjs/common";
 import { ReservationState, ReservationTime } from "@prisma/client";
 import { IsDateString, IsEnum, IsInt } from "class-validator";
 
@@ -10,7 +11,7 @@ export class CreateReservationDto {
   end_time: string;
   @IsEnum(ReservationTime)
   reservation_time: ReservationTime;
-  @IsEnum(ReservationState)
+  @Optional()
   state: ReservationState;
 
 
