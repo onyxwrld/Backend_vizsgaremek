@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Max, MaxLength, Min, MinLength, min } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsString, Max, MaxLength, Min, MinLength, min } from "class-validator";
 import { RoleType } from "@prisma/client";
 export class CreateUserDto {
     @IsNotEmpty({message:'A név megadása kötelező'})
@@ -20,5 +20,6 @@ export class CreateUserDto {
     @IsString({ message: 'A vezetéknévnek szöveges típusúnak kell lennie.' })
     last_name: string;
     token:string;
+    @IsEnum(RoleType)
     role:RoleType;
 }
