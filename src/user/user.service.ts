@@ -31,6 +31,17 @@ export class UserService {
       }
     })
   }
+  async createAdmin(createUserDto: CreateUserDto) {
+    return this.db.user.create({
+      data: {
+        ...createUserDto,
+        password: await hash(createUserDto.password),
+        role:"Admin",
+       
+        
+      }
+    })
+  }
 
   findAll() {
     return this.db.user.findMany();

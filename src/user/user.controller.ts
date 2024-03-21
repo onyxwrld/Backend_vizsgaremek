@@ -43,6 +43,20 @@ export class UserController {
 
     return this.userService.createUser(createUserDto);
   }
+  @Post('registeradmin')
+  async createAdmin(@Body() createUserDto: CreateUserDto) {
+
+    const user = await this.userService.findByUsername(createUserDto.username)
+    const email = await this.userService.findByUserEmail(createUserDto.email)
+    if (email) {
+      throw new ConflictException("Email already exist!")
+    }
+    if (user) {
+      throw new ConflictException("Username already exist!")
+    }
+
+    return this.userService.createAdmin(createUserDto);
+  }
 
   @Get()
   findAll() {
