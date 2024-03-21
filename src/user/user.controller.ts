@@ -43,9 +43,11 @@ export class UserController {
 
     return this.userService.createUser(createUserDto);
   }
-  @Post('registeradmin')
-  async createAdmin(@Body() createUserDto: CreateUserDto) {
+  @Post('createadmin')
+  @UseGuards(AuthGuard('bearer'))
+  async createAdmin(@Body() createUserDto: CreateUserDto,@Request() req) {
 
+    const role = req.user.role;
     const user = await this.userService.findByUsername(createUserDto.username)
     const email = await this.userService.findByUserEmail(createUserDto.email)
     if (email) {
@@ -53,6 +55,9 @@ export class UserController {
     }
     if (user) {
       throw new ConflictException("Username already exist!")
+    }
+    if(role != 'Admin'){
+      throw new ForbiddenException("Csak admin hajthatja végre ezt a műveletett.")
     }
 
     return this.userService.createAdmin(createUserDto);
