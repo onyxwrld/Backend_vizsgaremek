@@ -11,9 +11,10 @@ export class BasketService {
   }
   async create(menuPrice: number, menu: number, user: number) {
     try {
-      const existingBasket = this.db.basket.findFirst({
+      const existingBasket = await this.db.basket.findFirst({
         where: { userId: user }
-      })
+      });
+
       if (existingBasket) {
         const basket = await this.db.basket.update({
           data: {
@@ -32,18 +33,18 @@ export class BasketService {
       } else {
         const newbasket = await this.db.basket.create({
           data: {
-            menu: {
-              connect: {
-                id: menu
-              }
-            },
             user: {
               connect: {
                 id: user
               }
+            },
+            menu: {
+              connect: {
+                id: menu
+              }
             }
           }
-        })
+        });
         return newbasket;
       }
     } catch (error) {
