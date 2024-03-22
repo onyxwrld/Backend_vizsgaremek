@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 export class ReservationService {
   constructor(private readonly db: PrismaService) { }
   async create(createReservationDto: CreateReservationDto, user_id: number) {
-    const reservations = await this.db.reservation.create({
+    const reservation = await this.db.reservation.create({
       include: {
         user: {
           include:
@@ -41,7 +41,6 @@ export class ReservationService {
         },
       },
     });
-    for (let reservation of reservations){
       let total_sum = 0;
         for(let users of reservation.user.basket){
           
@@ -51,8 +50,8 @@ export class ReservationService {
           
         }
         ;reservation.total_amount = total_sum;
-     } 
-     return reservations;
+     
+     return reservation;
   }
 
   async findAll(user_id:number) {
