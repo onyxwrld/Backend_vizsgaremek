@@ -25,9 +25,7 @@ export class UserService {
       data: {
         ...createUserDto,
         password: await hash(createUserDto.password),
-        role:"User",
-       
-        
+        role:'User', 
       }
     })
   }

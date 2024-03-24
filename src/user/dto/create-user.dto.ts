@@ -1,5 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, Max, MaxLength, Min, MinLength, min } from "class-validator";
 import { RoleType } from "@prisma/client";
+import { Optional } from "@nestjs/common"; 
 export class CreateUserDto {
     @IsNotEmpty({message:'A név megadása kötelező'})
     @MaxLength(20,{message:"A név maximum 20 karakter lehet"})
@@ -20,6 +21,6 @@ export class CreateUserDto {
     @IsString({ message: 'A vezetéknévnek szöveges típusúnak kell lennie.' })
     last_name: string;
     token:string;
-    @IsEnum(RoleType)
+    @Optional()
     role:RoleType;
 }
