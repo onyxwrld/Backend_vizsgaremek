@@ -76,7 +76,13 @@ export class UserService {
 
   }
 
-  remove(id: number) {
+ async remove(id: number) {
+ 
+    await this.db.review.deleteMany({
+      where: {
+        userId: id
+      }
+    });
     return this.db.user.delete({
       where: {id}
     })
