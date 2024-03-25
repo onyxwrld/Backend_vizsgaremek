@@ -48,8 +48,9 @@ export class ReservationService {
             total_sum += menuitems.price
           }
           
-        }
-        ;reservation.total_amount = total_sum;
+        };
+        
+        reservation.total_amount = total_sum;
      
      return reservation;
   }
