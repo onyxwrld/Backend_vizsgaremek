@@ -92,7 +92,7 @@ model Review{
     rate Int
     content String
     userId Int
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 enum ReservationTime {
   One
