@@ -81,19 +81,19 @@ export class ReservationService {
         for (let reservation of reservations) {
             let total_sum = 0;
 
-            // Add up the prices of menu items
+            
             for (let basketItem of reservation.user.basket) {
                 for (let menuItem of basketItem.menu) {
                     total_sum += menuItem.price;
                 }
             }
 
-            // Add up the prices of bicycles
-            for (let bicycle of reservation.bicycle_id) { // Módosítás itt: reservation.bicycles
+            //itt nem biztos hogy a ciklus a jó megoldás
+            for (let bicycle of reservation.bicycle_id) {
                 total_sum += bicycle.price;
             }
 
-            reservation.total_amount = total_sum; // Assign total amount to reservation object
+            reservation.total_amount = total_sum; 
         }
 
         return reservations;
