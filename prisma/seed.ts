@@ -64,13 +64,13 @@ async function main() {
     }
     await prisma.opening.create({
       data:{
-        Monday: "8-16",
-        Tuesday:"8-16",
-        Wednesday:"8-16",
-        Thursday:"8-16",
-        Friday:"8-20",
-        Sasturday:"10-13",
-        Sunday:"Closed",
+        monday:"8-16",
+        tuesday:"8-16",
+        wednesday:"8-16",
+        thursday:"8-16",
+        friday:"8-20",
+        sasturday:"10-13",
+        sunday:"Closed",
 
       }
     })
@@ -80,7 +80,7 @@ async function main() {
         email: 'asd@asd.com',
         location: '1111 Budapest csimpánz utca 23',
         opening:{connect:{ id: 1 }},
-        worker:{connect:{id:1}}
+        user:{connect:{id: 1}}
       }
     })
     

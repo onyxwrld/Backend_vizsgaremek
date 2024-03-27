@@ -17,12 +17,7 @@ export class TorzsAdatokService {
     return this.db.torzsAdatok.findMany({
       include: {
         opening: true,
-        worker: {
-          select: {
-            last_name: true,
-            first_name: true
-          }
-        }
+       
       }
     });
   }
@@ -31,13 +26,7 @@ export class TorzsAdatokService {
     return this.db.torzsAdatok.findFirstOrThrow({
       where:{id},
       include:{
-        opening:true,
-        worker:{
-          select:{
-            last_name: true,
-            first_name:true
-          }
-        }
+        opening:true
       }
     });
   }
