@@ -47,13 +47,13 @@ model Reservation {
 }
 model Opening{
   id Int @id @default(autoincrement())
-  Monday String
-  Tuesday String
-  Wednesday String
-  Thursday String
-  Friday String
-  Sasturday String
-  Sunday String
+  monday String
+  tuesday String
+  wednesday String
+  thursday String
+  friday String
+  sasturday String
+  sunday String
   torzsAdatok TorzsAdatok?
 }
 model Token{
