@@ -69,8 +69,8 @@ model TorzsAdatok {
   opening_hours_id Int @unique
   opening Opening @relation(fields: [opening_hours_id],references: [id])
   location      String
-  company_id    Int    
-  worker User @relation(fields: [company_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+  user_id          Int
 }
 
 model User {
