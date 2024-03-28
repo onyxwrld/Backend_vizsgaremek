@@ -29,8 +29,7 @@ export class ReviewService {
       include:{
         user:{
           select:{
-            username:true,
-            email:true
+            username:true
           }
         }
       }
