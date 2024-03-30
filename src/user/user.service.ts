@@ -69,7 +69,7 @@ export class UserService {
 
   async updatePass(id: number, changePassDto: ChangePassDto){
     return this.db.user.update({
-      data: {password:changePassDto.newpass},
+      data: {password: await  hash(changePassDto.newpass)},
       where:{id}
 
     })
