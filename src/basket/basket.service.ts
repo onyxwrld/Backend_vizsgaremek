@@ -9,7 +9,7 @@ export class BasketService {
   constructor(private readonly db: PrismaService) {
 
   }
-  async create(menuPrice: number, menu: number, user: number) {
+  async create( menu: number, user: number) {
     try {
       const existingBasket = this.db.basket.findFirst({
         where: { userId: user }
@@ -64,8 +64,23 @@ export class BasketService {
     return `This action returns a #${id} basket`;
   }
 
-  update(id: number, updateBasketDto: UpdateBasketDto) {
-    return 'This action update basket.';
+  updateitems(id: number,menu:number,) {
+    return this.db.basket.update({
+      where:{id},
+      data:{
+        menu:{
+          disconnect:{ id: menu}
+        }
+      }
+    });
+  }
+  update(id:number,){
+    return this.db.basket.update({
+      where:{id},
+      data:{
+        deleted:true
+      }
+    })
   }
 
   remove(id: number) {

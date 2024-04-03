@@ -4,15 +4,19 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
+import { BasketService } from 'src/basket/basket.service';
 
 @Controller('reservation')
 export class ReservationController {
-  constructor(private readonly reservationService: ReservationService) { }
+  constructor(
+    private readonly reservationService: ReservationService,
+    private readonly basketService: BasketService) { }
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
   create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
-    return this.reservationService.create(createReservationDto,req.user.id);
+    const basket = req.basket.id;
+    return this.reservationService.create(createReservationDto,req.user.id)&& this.basketService.update(basket);
   }
 
   @Get()

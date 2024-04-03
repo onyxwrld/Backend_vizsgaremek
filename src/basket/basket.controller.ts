@@ -18,7 +18,7 @@ export class BasketController {
     const menu = createBasketDto.menu;
 
     const menuPrice = createBasketDto.menuPrice;
-    return this.basketService.create(menuPrice,menu, user);
+    return this.basketService.create(menu, user);
   }
 
   @Get()
@@ -39,10 +39,10 @@ export class BasketController {
     }
     
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBasketDto: UpdateBasketDto) {
-    return this.basketService.update(+id, updateBasketDto);
+  @Patch(':id/removeitems')
+  updateitems(@Param('id') id:string, @Body() updateBasketDto:UpdateBasketDto){
+    const menu = updateBasketDto.menu
+    return this.basketService.updateitems(+id,menu)
   }
 
   @Delete(':id')
