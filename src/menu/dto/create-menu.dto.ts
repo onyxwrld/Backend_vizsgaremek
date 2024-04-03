@@ -1,5 +1,5 @@
 import {  MenuType } from "@prisma/client";
-import {IsEnum, IsNotEmpty, IsNumber, Min, isPositive } from "class-validator";
+import {IsEnum, IsNotEmpty, IsNumber, Min } from "class-validator";
 
 export class CreateMenuDto {
     @IsNotEmpty({message:'A név megadása kötelező'})

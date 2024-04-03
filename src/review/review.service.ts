@@ -57,6 +57,11 @@ export class ReviewService {
 
   update(id: number, updateReviewDto: UpdateReviewDto) {
     return `This action updates a #${id} review`;
+  } 
+  remove1(id: number) {
+    return this.db.review.delete({
+      where:{id}
+    });
   }
 
   remove(id: number) {

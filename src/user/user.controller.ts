@@ -133,11 +133,19 @@ export class UserController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @UseGuards(AuthGuard('bearer'))
+  async remove(@Param('id') id: string,@Request() req) {
     try {
-      return await this.userService.remove(+id);
-    } catch {
-      throw new BadRequestException('A keresett ID nem található')
+      if(req.user.role!="Admin")
+      {
+        throw new UnauthorizedException();
+      }
+      else{
+        return await this.userService.remove(+id);
+      }
+     
+    } catch(e) {
+      throw new BadRequestException('A keresett ID nem található'+e)
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -44,6 +44,19 @@ export class ReviewController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.update(+id, updateReviewDto);
+  }
+
+  @Delete('AdminRevDelete/:id')
+  @UseGuards(AuthGuard('bearer'))
+  async remove1(@Param('id') id: string, @Request() req) {
+    try {
+      if (req.user.role !== 'Admin') {
+        throw new UnauthorizedException('Nincs jogosultsága a művelet végrehajtásához.');
+      }
+      return await this.reviewService.remove(+id);
+    } catch (e) {
+      throw new BadRequestException('A keresett ID nem található vagy a törlés nem sikerült.');
+    }
   }
 
   @Delete(':id')

@@ -25,9 +25,7 @@ export class UserService {
       data: {
         ...createUserDto,
         password: await hash(createUserDto.password),
-        role:"User",
-       
-        
+        role:'User', 
       }
     })
   }
@@ -71,14 +69,14 @@ export class UserService {
 
   async updatePass(id: number, changePassDto: ChangePassDto){
     return this.db.user.update({
-      data: {password:changePassDto.newpass},
+      data: {password: await  hash(changePassDto.newpass)},
       where:{id}
 
     })
 
   }
 
-  remove(id: number) {
+ async remove(id: number) {
     return this.db.user.delete({
       where: {id}
     })

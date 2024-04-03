@@ -19,77 +19,91 @@ export class ReservationService {
                 {
                   select:
                   {
-                    price:true
+                    price: true
                   }
                 }
               }
             }
           }
-        }
-      }
-    ,
+        }, bicycle: { select: { id: true, price: true } }
+      },
       data: {
         state: "Pending",
         start_time: createReservationDto.start_time,
-        end_time:createReservationDto.end_time,
-        reservation_time:createReservationDto.reservation_time,
+        location: createReservationDto.location,
+        reservation_time: createReservationDto.reservation_time,
         total_amount: 0,
-        user:{
-          connect:{
-            id:user_id
+        user: {
+          connect: {
+            id: user_id
           }
-        },
+        }, bicycle: {
+          connect: {
+            id: createReservationDto.bicycle_id
+          }
+        }
       },
     });
-      let total_sum = 0;
-        for(let users of reservation.user.basket){
-          
-          for(let menuitems of users.menu ){
-            total_sum += menuitems.price
-          }
-          
-        }
-        ;reservation.total_amount = total_sum;
-     
-     return reservation;
+    let total_sum = 0;
+    for (let users of reservation.user.basket) {
+
+      for (let menuitems of users.menu) {
+        total_sum += menuitems.price
+      }
+
+    };
+    total_sum+=reservation.bicycle.price
+    reservation.total_amount = total_sum;
+
+    return reservation;
   }
 
-  async findAll(user_id:number) {
-    const reservations = await  this.db.reservation.findMany({
-      include: {
-        user: {
-          include:
-          {
-            basket:
-            {
-              include:
-              {
-                menu:
-                {
-                  select:
-                  {
-                    price:true
+  async findAll(user_id: number) {
+    try {
+      const reservations = await this.db.reservation.findMany({
+        include: {
+
+          user: {
+            include: {
+              basket: {
+                include: {
+                  menu: {
+                    select: {
+                      price: true
+                    }
                   }
                 }
               }
             }
-          }
-        }
-      },where:{user_id}});
+          },
+          bicycle: { select: { price: true, type: true } }
+        },
+        where: { user_id },
+      });
 
-     for (let reservation of reservations){
-      let total_sum = 0;
-        for(let users of reservation.user.basket){
-          
-          for(let menuitems of users.menu ){
-            total_sum += menuitems.price
+      for (let reservation of reservations) {
+        let total_sum = 0;
+
+
+        for (let basketItem of reservation.user.basket) {
+          for (let menuItem of basketItem.menu) {
+            total_sum += menuItem.price;
           }
-          
         }
-        ;reservation.total_amount = total_sum;
-     } 
-     return reservations;
+
+        //itt nem biztos hogy a ciklus a jó megoldás
+        total_sum += reservation.bicycle.price
+
+        reservation.total_amount = total_sum;
+      }
+
+      return reservations;
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+      throw error;
+    }
   }
+
 
   findOne(id: number) {
     return this.db.reservation.findUniqueOrThrow(

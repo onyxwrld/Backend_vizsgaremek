@@ -38,22 +38,23 @@ model Reservation {
   id               Int              @id @default(autoincrement())
   user User @relation(fields: [user_id], references: [id])
   user_id          Int
-  bicycle_id       Bicycle[]         
+   bicycle          Bicycle          @relation(fields: [bicycle_id], references: [id])
+  bicycle_id     Int         
   start_time       String
-  end_time  String
+ location String
   reservation_time ReservationTime
   state            ReservationState
   total_amount Int //tárolt eljárás
 }
 model Opening{
   id Int @id @default(autoincrement())
-  Monday String
-  Tuesday String
-  Wednesday String
-  Thursday String
-  Friday String
-  Sasturday String
-  Sunday String
+  monday String
+  tuesday String
+  wednesday String
+  thursday String
+  friday String
+  sasturday String
+  sunday String
   torzsAdatok TorzsAdatok?
 }
 model Token{
@@ -69,8 +70,8 @@ model TorzsAdatok {
   opening_hours_id Int @unique
   opening Opening @relation(fields: [opening_hours_id],references: [id])
   location      String
-  company_id    Int    
-  worker User @relation(fields: [company_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+  user_id          Int
 }
 
 model User {
@@ -92,7 +93,7 @@ model Review{
     rate Int
     content String
     userId Int
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id],onDelete: Cascade)
 }
 enum ReservationTime {
   One
