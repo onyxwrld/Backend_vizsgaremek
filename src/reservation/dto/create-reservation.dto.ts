@@ -14,6 +14,7 @@ export class CreateReservationDto {
   @Optional()
   state: ReservationState;
   total_amount: number;
-
+  @IsInt()
+  bicycle_id: number;
 
 }
