@@ -14,9 +14,9 @@ export class ReservationController {
 
   @Post()
   @UseGuards(AuthGuard('bearer'))
-  create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
-    const basket = req.basket.id;
-    return this.reservationService.create(createReservationDto,req.user.id)&& this.basketService.update(basket);
+  async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
+    
+    return  await this.basketService.update(req.user.id) &&this.reservationService.create(createReservationDto,req.user.id);
   }
 
   @Get()

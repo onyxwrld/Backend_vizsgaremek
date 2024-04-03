@@ -41,7 +41,7 @@ model Reservation {
    bicycle          Bicycle          @relation(fields: [bicycle_id], references: [id])
   bicycle_id     Int         
   start_time       String
- location String
+  location String
   reservation_time ReservationTime
   state            ReservationState
   total_amount Int //tárolt eljárás

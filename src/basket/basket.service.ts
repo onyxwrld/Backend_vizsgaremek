@@ -75,9 +75,9 @@ export class BasketService {
       }
     });
   }
-  update(id:number,){
+  update(userId:number){
     return this.db.basket.update({
-      where:{id},
+      where:{id:userId},
       data:{
         deleted:true
       }
