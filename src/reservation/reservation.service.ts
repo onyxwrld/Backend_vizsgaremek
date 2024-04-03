@@ -30,7 +30,7 @@ export class ReservationService {
       data: {
         state: "Pending",
         start_time: createReservationDto.start_time,
-        end_time: createReservationDto.end_time,
+        location: createReservationDto.location,
         reservation_time: createReservationDto.reservation_time,
         total_amount: 0,
         user: {

@@ -64,12 +64,12 @@ async function main() {
     }
     await prisma.opening.create({
       data:{
-        monday:"8-16",
-        tuesday:"8-16",
-        wednesday:"8-16",
-        thursday:"8-16",
-        friday:"8-20",
-        sasturday:"10-13",
+        monday:"8:00-16:00",
+        tuesday:"8:00-16:00",
+        wednesday:"8:00-16:00",
+        thursday:"8:00-16:00",
+        friday:"8:00-16:00",
+        sasturday:"8:00-16:00",
         sunday:"Closed",
 
       }
