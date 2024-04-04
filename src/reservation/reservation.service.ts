@@ -6,14 +6,22 @@ import { PrismaService } from 'src/prisma.service';
 export class ReservationService {
   constructor(private readonly db: PrismaService) { }
   async create(createReservationDto: CreateReservationDto, user_id: number) {
+    const deletedbasket = await this.db.basket.findFirst({
+      where: { deleted: false }
+    });
+    if(deletedbasket){
     const reservation = await this.db.reservation.create({
+      
       include: {
         user: {
           include:
           {
-            basket:
-            {
-              include:
+            basket:{
+              where:{
+                deleted:false
+              },
+            
+            include:
               {
                 menu:
                 {
@@ -24,6 +32,7 @@ export class ReservationService {
                 }
               }
             }
+            
           }
         }, bicycle: { select: { id: true, price: true } }
       },
@@ -54,8 +63,9 @@ export class ReservationService {
     };
     total_sum+=reservation.bicycle.price
     reservation.total_amount = total_sum;
-
+  
     return reservation;
+  }
   }
 
   async findAll(user_id: number) {
