@@ -75,13 +75,16 @@ export class BasketService {
       }
     });
   }
-  update(userId:number){
-    return this.db.basket.update({
-      where:{id:userId},
-      data:{
-        deleted:true
+  update(userId: number) {
+    return this.db.basket.updateMany({
+      where: { 
+        userId: userId,
+        deleted: false 
+      },
+      data: {
+        deleted: true
       }
-    })
+    });
   }
 
   remove(id: number) {
