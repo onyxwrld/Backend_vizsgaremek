@@ -12,6 +12,15 @@ export class ReservationController {
     private readonly reservationService: ReservationService,
     private readonly basketService: BasketService) { }
 
+    @Get('allRes')
+    @UseGuards(AuthGuard('bearer'))
+    findAllres(@Request() req) {
+      const user: User = req.user;
+      if (user.role !== 'Admin') {
+        throw new ForbiddenException('Nincs megfelelő jogosultság az összes foglalás lekérdezéséhez');
+      }
+      return this.reservationService.findAllres();
+    }
   @Post()
   @UseGuards(AuthGuard('bearer'))
   async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
