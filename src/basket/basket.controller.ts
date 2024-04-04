@@ -20,7 +20,18 @@ export class BasketController {
     const menuPrice = createBasketDto.menuPrice;
     return this.basketService.create(menu, user);
   }
-
+  @Get(':userId/getbasket')
+  @UseGuards(AuthGuard('bearer'))
+  async getBasket(@Param('userId') userId: string) {
+    try {
+      const parsedUserId = parseInt(userId, 10); // Átalakítjuk az userId-t egész számmá
+      const basket = await this.basketService.getBasket(parsedUserId);
+      return basket;
+    } catch (error) {
+      console.error('Error fetching user basket:', error);
+      throw error;
+    }
+  }
   @Get()
   @UseGuards(AuthGuard('bearer'))
   findAll(@Request() req) {

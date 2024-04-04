@@ -67,6 +67,7 @@ export class ReservationService {
     return reservation;
   }
   }
+  
 
   async findAll(user_id: number) {
     try {
@@ -79,7 +80,8 @@ export class ReservationService {
                 include: {
                   menu: {
                     select: {
-                      price: true
+                      price: true,
+                      name:true,
                     }
                   }
                 }

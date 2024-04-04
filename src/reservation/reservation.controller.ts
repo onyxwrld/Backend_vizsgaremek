@@ -78,4 +78,5 @@ async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateR
       throw new BadRequestException('A keresett ID nem található')
     }
   }
+  
 }
