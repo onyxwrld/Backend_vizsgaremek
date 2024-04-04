@@ -137,6 +137,12 @@ export class ReservationService {
       }
     );
   }
+  updateState(id:number,updateReservationDto:UpdateReservationDto){
+    return this.db.reservation.update({
+      data: {state: updateReservationDto.state},
+      where: {id}
+    })
+  }
    async findAllres() {
     try {
       const reservations = await this.db.reservation.findMany({

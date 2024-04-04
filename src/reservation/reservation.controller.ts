@@ -21,6 +21,15 @@ export class ReservationController {
       }
       return this.reservationService.findAllres();
     }
+    @Patch(':id/state')
+@UseGuards(AuthGuard('bearer'))
+async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
+  const user: User = req.user;
+  if (user.role !== 'Admin') {
+    throw new ForbiddenException('Only admins can update reservation state.');
+  }
+  return await this.reservationService.updateState(+id, updateReservationDto);
+}
   @Post()
   @UseGuards(AuthGuard('bearer'))
   async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
