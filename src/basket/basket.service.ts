@@ -75,23 +75,7 @@ export class BasketService {
       }
     });
   }
-  async getBasket(userId: number) {
-    try {
-      const basket = await this.db.basket.findMany({
-        select: {
-          menu: true
-        },
-        where: {
-          userId,
-          deleted: false
-        }
-      });
-      return basket;
-    } catch (error) {
-      console.error('Error fetching user basket:', error);
-      throw error;
-    }
-  }
+  
 
   update(userId: number) {
     return this.db.basket.updateMany({

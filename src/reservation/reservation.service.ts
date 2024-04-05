@@ -156,7 +156,8 @@ export class ReservationService {
                 include: {
                   menu: {
                     select: {
-                      price: true
+                      price: true,
+                      name:true
                     }
                   }
                 }
