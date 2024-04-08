@@ -12,7 +12,7 @@ export class BasketService {
   async create( menu: number, user: number) {
     try {
       const existingBasket = await this.db.basket.findFirst({
-        where: { userId: user }
+        where: { userId: user,deleted:false }
       });
 
       if (existingBasket) {
