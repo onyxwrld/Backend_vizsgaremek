@@ -67,6 +67,7 @@ export class ReservationService {
     return reservation;
   }
   }
+  
 
   async findAll(user_id: number) {
     try {
@@ -79,7 +80,8 @@ export class ReservationService {
                 include: {
                   menu: {
                     select: {
-                      price: true
+                      price: true,
+                      name:true,
                     }
                   }
                 }
@@ -137,4 +139,58 @@ export class ReservationService {
       }
     );
   }
-}
+  updateState(id:number,updateReservationDto:UpdateReservationDto){
+    return this.db.reservation.update({
+      data: {state: updateReservationDto.state},
+      where: {id}
+    })
+  }
+   async findAllres() {
+    try {
+      const reservations = await this.db.reservation.findMany({
+        include: {
+
+          user: {
+            include: {
+              basket: {
+                include: {
+                  menu: {
+                    select: {
+                      price: true,
+                      name:true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          bicycle: { select: { price: true, type: true } }
+        },
+        
+      });
+
+      for (let reservation of reservations) {
+        let total_sum = 0;
+
+
+        for (let basketItem of reservation.user.basket) {
+          for (let menuItem of basketItem.menu) {
+            total_sum += menuItem.price;
+          }
+        }
+
+        //itt nem biztos hogy a ciklus a jó megoldás
+        total_sum += reservation.bicycle.price
+
+        reservation.total_amount = total_sum;
+      }
+
+      return reservations;
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+      throw error;
+    }
+  }
+   }
+     
+

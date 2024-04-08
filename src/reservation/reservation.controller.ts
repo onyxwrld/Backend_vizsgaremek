@@ -12,6 +12,24 @@ export class ReservationController {
     private readonly reservationService: ReservationService,
     private readonly basketService: BasketService) { }
 
+    @Get('allRes')
+    @UseGuards(AuthGuard('bearer'))
+    findAllres(@Request() req) {
+      const user: User = req.user;
+      if (user.role !== 'Admin') {
+        throw new ForbiddenException('Nincs megfelelő jogosultság az összes foglalás lekérdezéséhez');
+      }
+      return this.reservationService.findAllres();
+    }
+    @Patch(':id/state')
+@UseGuards(AuthGuard('bearer'))
+async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
+  const user: User = req.user;
+  if (user.role !== 'Admin') {
+    throw new ForbiddenException('Only admins can update reservation state.');
+  }
+  return await this.reservationService.updateState(+id, updateReservationDto);
+}
   @Post()
   @UseGuards(AuthGuard('bearer'))
   async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
@@ -60,4 +78,5 @@ export class ReservationController {
       throw new BadRequestException('A keresett ID nem található')
     }
   }
+  
 }
