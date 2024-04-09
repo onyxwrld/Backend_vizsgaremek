@@ -27,7 +27,7 @@ export class ReservationService {
         total_amount: 0,
         basket:{
           connect:{
-            id: createReservationDto.basketId
+            id: createReservationDto.basket_id
           }
         },
         user: {
@@ -104,7 +104,7 @@ export class ReservationService {
           
           bicycle: { select: { price: true, type: true } }
         },
-        where:{id:user_id}
+        where:{ user_id: user_id}
         
       });
 

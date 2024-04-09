@@ -57,7 +57,7 @@ export class BasketService {
       include: {
         menu: true
       },
-      where: { userId }
+      where: { userId,deleted:false }
     });
   }
 
