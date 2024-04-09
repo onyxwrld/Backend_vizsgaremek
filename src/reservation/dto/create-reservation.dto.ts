@@ -16,5 +16,6 @@ export class CreateReservationDto {
   total_amount: number;
   @IsInt()
   bicycle_id: number;
+  basketId: number;
 
 }

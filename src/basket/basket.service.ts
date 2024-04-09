@@ -78,16 +78,28 @@ export class BasketService {
   
 
   update(userId: number) {
+    const nowDate = new Date;
     return this.db.basket.updateMany({
       where: { 
         userId: userId,
         deleted: false 
       },
       data: {
-        deleted: true
+        deleted: true,
+        deletedAt: nowDate
+
       }
     });
   }
+  async findUserBasketInfo(id: number){
+    const basketObj = await this.db.basket.findFirst({where: {id} })
+    if(basketObj == null){
+        return null;
+    }
+    return await this.db.basket.findFirstOrThrow({
+        where:{id: basketObj.id},
+    })
+}
 
   remove(id: number) {
     return `This action removes a #${id} basket`;

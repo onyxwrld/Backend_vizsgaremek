@@ -2,13 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { PrismaService } from 'src/prisma.service';
+import { Basket } from '@prisma/client';
+import { BasketService } from 'src/basket/basket.service';
+import { log } from 'console';
 @Injectable()
 export class ReservationService {
-  constructor(private readonly db: PrismaService) { }
+  constructor(private readonly db: PrismaService,private readonly basketService:BasketService) { }
   async create(createReservationDto: CreateReservationDto, user_id: number) {
     const deletedbasket = await this.db.basket.findFirst({
-      where: { deleted: false }
+      where: { deleted: false,userId:user_id }
     });
+    const nowDate = new Date;
+    console.log(deletedbasket);
+    
     if(deletedbasket){
     const reservation = await this.db.reservation.create({
       
@@ -42,6 +48,11 @@ export class ReservationService {
         location: createReservationDto.location,
         reservation_time: createReservationDto.reservation_time,
         total_amount: 0,
+        basket:{
+          connect:{
+            id: createReservationDto.basketId
+          }
+        },
         user: {
           connect: {
             id: user_id
@@ -49,6 +60,7 @@ export class ReservationService {
         }, bicycle: {
           connect: {
             id: createReservationDto.bicycle_id
+
           }
         }
       },
@@ -70,38 +82,36 @@ export class ReservationService {
   
 
   async findAll(user_id: number) {
+    
+   
     try {
       const reservations = await this.db.reservation.findMany({
         include: {
-
-          user: {
+          user:true,
+          basket: {
             include: {
-              basket: {
-                include: {
-                  menu: {
-                    select: {
-                      price: true,
-                      name:true,
-                    }
-                  }
+              menu: {
+                select: {
+                  price: true,
+                  name:true
                 }
               }
             }
           },
+          
           bicycle: { select: { price: true, type: true } }
         },
-        where: { user_id },
+        where:{id:user_id}
+        
       });
 
       for (let reservation of reservations) {
         let total_sum = 0;
 
 
-        for (let basketItem of reservation.user.basket) {
-          for (let menuItem of basketItem.menu) {
+          for (let menuItem of reservation.basket.menu) {
             total_sum += menuItem.price;
           }
-        }
 
         //itt nem biztos hogy a ciklus a jó megoldás
         total_sum += reservation.bicycle.price
@@ -146,24 +156,22 @@ export class ReservationService {
     })
   }
    async findAllres() {
+
     try {
       const reservations = await this.db.reservation.findMany({
         include: {
-
-          user: {
+          user:true,
+          basket: {
             include: {
-              basket: {
-                include: {
-                  menu: {
-                    select: {
-                      price: true,
-                      name:true
-                    }
-                  }
+              menu: {
+                select: {
+                  price: true,
+                  name:true
                 }
               }
             }
           },
+          
           bicycle: { select: { price: true, type: true } }
         },
         
@@ -173,11 +181,9 @@ export class ReservationService {
         let total_sum = 0;
 
 
-        for (let basketItem of reservation.user.basket) {
-          for (let menuItem of basketItem.menu) {
+          for (let menuItem of reservation.basket.menu) {
             total_sum += menuItem.price;
           }
-        }
 
         //itt nem biztos hogy a ciklus a jó megoldás
         total_sum += reservation.bicycle.price

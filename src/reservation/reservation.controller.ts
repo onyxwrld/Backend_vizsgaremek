@@ -5,6 +5,7 @@ import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { BasketService } from 'src/basket/basket.service';
+import { find } from 'rxjs';
 
 @Controller('reservation')
 export class ReservationController {
@@ -15,13 +16,14 @@ export class ReservationController {
     @Get('allRes')
     @UseGuards(AuthGuard('bearer'))
     findAllres(@Request() req) {
+      
       const user: User = req.user;
       if (user.role !== 'Admin') {
         throw new ForbiddenException('Nincs megfelelő jogosultság az összes foglalás lekérdezéséhez');
       }
       return this.reservationService.findAllres();
     }
-    @Patch(':id/state')
+@Patch(':id/state')
 @UseGuards(AuthGuard('bearer'))
 async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
   const user: User = req.user;
@@ -36,6 +38,8 @@ async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateR
     const createdReservation = await this.reservationService.create(createReservationDto, req.user.id);
     const basket = await this.basketService.update(req.user.id);
     return basket && createdReservation;
+  
+    
 
   }
 
