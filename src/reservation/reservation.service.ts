@@ -18,30 +18,7 @@ export class ReservationService {
     if(deletedbasket){
     const reservation = await this.db.reservation.create({
       
-      include: {
-        user: {
-          include:
-          {
-            basket:{
-              where:{
-                deleted:false
-              },
-            
-            include:
-              {
-                menu:
-                {
-                  select:
-                  {
-                    price: true
-                  }
-                }
-              }
-            }
-            
-          }
-        }, bicycle: { select: { id: true, price: true } }
-      },
+      
       data: {
         state: "Pending",
         start_time: createReservationDto.start_time,
@@ -65,18 +42,44 @@ export class ReservationService {
         }
       },
     });
+    const reservations = await this.db.reservation.findFirst({
+      include: {
+        user: {
+          include:
+          {
+            basket:{
+              where:{
+                deleted:false
+              },
+            
+            include:
+              {
+                menu:
+                {
+                  select:
+                  {
+                    price: true
+                  }
+                }
+              }
+            }
+            
+          }
+        }, bicycle: { select: { id: true, price: true } }
+      },where:{id:reservation.id}
+    });
+    
     let total_sum = 0;
-    for (let users of reservation.user.basket) {
+    for (let users of reservations.user.basket) {
 
       for (let menuitems of users.menu) {
         total_sum += menuitems.price
       }
 
     };
-    total_sum+=reservation.bicycle.price
+    total_sum+=reservations.bicycle.price
     reservation.total_amount = total_sum;
-  
-    return reservation;
+    return reservations;
   }
   }
   
