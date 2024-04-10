@@ -32,6 +32,15 @@ async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateR
   }
   return await this.reservationService.updateState(+id, updateReservationDto);
 }
+@Patch(':id/stateme')
+@UseGuards(AuthGuard('bearer'))
+async updateStateme(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
+  const user: User = req.user;
+  if ( user.id != parseInt(id)) {
+    throw new ForbiddenException('Only admins can update reservation state.');
+  }
+  return await this.reservationService.updateState(+id, updateReservationDto);
+}
   @Post()
   @UseGuards(AuthGuard('bearer'))
   async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {

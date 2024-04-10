@@ -158,6 +158,12 @@ export class ReservationService {
       where: {id}
     })
   }
+  updateStateme(id:number,updateReservationDto:UpdateReservationDto){
+    return this.db.reservation.update({
+      data: {state: updateReservationDto.state},
+      where: {id}
+    })
+  }
    async findAllres() {
 
     try {
