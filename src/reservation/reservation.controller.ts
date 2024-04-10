@@ -37,7 +37,7 @@ async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateR
 async updateStateme(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
   const user: User = req.user;
   if ( user.id != parseInt(id)) {
-    throw new ForbiddenException('Only admins can update reservation state.');
+    throw new ForbiddenException('');
   }
   return await this.reservationService.updateState(+id, updateReservationDto);
 }
