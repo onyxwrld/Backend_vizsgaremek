@@ -13,48 +13,42 @@ export class ReservationController {
     private readonly reservationService: ReservationService,
     private readonly basketService: BasketService) { }
 
-    @Get('allRes')
-    @UseGuards(AuthGuard('bearer'))
-    findAllres(@Request() req) {
-      
-      const user: User = req.user;
-      if (user.role !== 'Admin') {
-        throw new ForbiddenException('Nincs megfelelő jogosultság az összes foglalás lekérdezéséhez');
-      }
-      return this.reservationService.findAllres();
+  @Get('allRes')
+  @UseGuards(AuthGuard('bearer'))
+  findAllres(@Request() req) {
+
+    const user: User = req.user;
+    if (user.role !== 'Admin') {
+      throw new ForbiddenException('Nincs megfelelő jogosultság az összes foglalás lekérdezéséhez');
     }
-@Patch(':id/state')
-@UseGuards(AuthGuard('bearer'))
-async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
-  const user: User = req.user;
-  if (user.role !== 'Admin') {
-    throw new ForbiddenException('Only admins can update reservation state.');
+    return this.reservationService.findAllres();
   }
-  return await this.reservationService.updateState(+id, updateReservationDto);
-}
-@Patch(':id/stateme')
-@UseGuards(AuthGuard('bearer'))
-async updateStateme(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
-  const user: User = req.user;
-  if ( user.id != parseInt(id)) {
-    throw new ForbiddenException('');
+  @Patch(':id/state')
+  @UseGuards(AuthGuard('bearer'))
+  async updateState(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto, @Request() req) {
+    const user: User = req.user;
+    if (user.role !== 'Admin') {
+      throw new ForbiddenException('Only admins can update reservation state.');
+    }
+    return await this.reservationService.updateState(+id, updateReservationDto);
   }
-  return await this.reservationService.updateState(+id, updateReservationDto);
-}
+  @Patch('stateme/:id')
+  @UseGuards(AuthGuard('bearer'))
+  async updateUserCancel(@Param('id') id: string,  ) {
+    const numberId = parseInt(id);
+    return await this.reservationService.updateStateme(numberId );
+  }
   @Post()
   @UseGuards(AuthGuard('bearer'))
   async create(@Body() createReservationDto: CreateReservationDto, @Request() req) {
     const createdReservation = await this.reservationService.create(createReservationDto, req.user.id);
     const basket = await this.basketService.update(req.user.id);
     return basket && createdReservation;
-  
-    
-
   }
 
   @Get()
   @UseGuards(AuthGuard('bearer'))
-  findAll( @Request() req) {
+  findAll(@Request() req) {
     return this.reservationService.findAll(req.user.id);
   }
 
@@ -91,5 +85,5 @@ async updateStateme(@Param('id') id: string, @Body() updateReservationDto: Updat
       throw new BadRequestException('A keresett ID nem található')
     }
   }
-  
+
 }

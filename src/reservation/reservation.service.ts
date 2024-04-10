@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { PrismaService } from 'src/prisma.service';
-import { Basket } from '@prisma/client';
+import { Basket, ReservationState } from '@prisma/client';
 import { BasketService } from 'src/basket/basket.service';
-import { log } from 'console';
+import { error, log } from 'console';
 @Injectable()
 export class ReservationService {
   constructor(private readonly db: PrismaService,private readonly basketService:BasketService) { }
@@ -158,11 +158,18 @@ export class ReservationService {
       where: {id}
     })
   }
-  updateStateme(id:number,updateReservationDto:UpdateReservationDto){
-    return this.db.reservation.update({
-      data: {state: updateReservationDto.state},
-      where: {id}
-    })
+
+  updateStateme(id:number){
+    try{
+      return this.db.reservation.update({
+        data: {state: "Cancelled" },
+        where: {id}
+      })
+    }
+    catch(error) {
+      console.error("Error fetching reservations:", error);
+      throw error;
+    }
   }
    async findAllres() {
 
