@@ -57,7 +57,7 @@ model Opening{
   wednesday String
   thursday String
   friday String
-  sasturday String
+  saturday String
   sunday String
   torzsAdatok TorzsAdatok?
 }
@@ -102,7 +102,7 @@ model Review{
 enum ReservationTime {
   One
   Three
-  Fives
+  Five
 }
 enum MenuType {
     Drink
