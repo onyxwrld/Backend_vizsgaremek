@@ -4,6 +4,6 @@ export class CreateOpeningDto {
     Wednesday: string
     Thursday: string
     Friday: string
-    Sasturday: string
+    Saturday: string
     Sunday: string
 }

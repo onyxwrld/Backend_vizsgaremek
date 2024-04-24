@@ -15,5 +15,5 @@ export class CreateTorzsAdatokDto {
     @IsNotEmpty({message:'Hely megadása megadása kötelező'})
     location: string;
 
-    company_id: number;
+   
 }
