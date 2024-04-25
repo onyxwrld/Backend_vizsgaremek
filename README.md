@@ -22,11 +22,22 @@ A backend kezeli a felhasználók regisztrációját, bejelentkezését. Felhasz
 ```console
     npm i
 ```
-2. Adatbázisba importálja a beerCycleDB.sql fájlt, majd inditsa el az adatbázist. Irja át az adatbázisban létre hozott tábla nevére a .env fájlban található url-t.
+
+2. Adatok betöltése előtt adja ki az alábbi parancsokat.
+
+```console
+npx prisma db push
+npx prisma db seed
+
+```
+
+3. Adatbázisba importálja a beerCycleDB.sql fájlt, majd inditsa el az adatbázist. Irja át az adatbázisban létre hozott tábla nevére a .env fájlban található url-t.
+
 ```console
 DATABASE_URL="mysql://root@localhost/adatbázisod_neve"
 ```
-3. Végül adja ki a szerver inditásához.
+
+4. Végül adja ki a szerver inditásához.
 ```console
     npm run start:dev
 ```
