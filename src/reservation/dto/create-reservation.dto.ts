@@ -29,7 +29,6 @@ export class CreateReservationDto {
   @ApiProperty({ description: 'Teljes összeg' })
   total_amount: number;
   @ApiProperty({ description: 'Bicikli azonosítója' })
-  @IsInt()
   bicycle_id: number;
   @ApiProperty({ description: 'Kosár azonosítója' })
   basket_id: number;
